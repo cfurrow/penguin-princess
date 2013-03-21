@@ -8,8 +8,8 @@ var snowTexture     = null;
 function init()
 {
   stage           = new PIXI.Stage(0x5bb5ff);
-	renderer        = PIXI.autoDetectRenderer(window.innerWidth,window.innerHeight );
-	document.body.appendChild(renderer.view);
+	renderer        = PIXI.autoDetectRenderer(800,600);
+	document.getElementById("page").appendChild(renderer.view);
 
   snowTexture     = new PIXI.Texture.fromImage("images/bg-snow.png");
   snowStage       = new PIXI.Stage(0xFFFFFF);
@@ -89,8 +89,8 @@ function init()
   }
 
   window.onresize = function(e){
-    renderer.resize(window.innerWidth,window.innerHeight);
-    addGroundSnow();
+    //renderer.resize(window.innerWidth,window.innerHeight);
+    //addGroundSnow();
   }
 }
 
