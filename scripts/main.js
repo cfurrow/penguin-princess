@@ -6,6 +6,9 @@ var snowStage       = null;
 var snowTexture     = null;
 function init()
 {
+  var konami      = new Konami();
+  konami.code     = surprise;
+  konami.load();
   stage           = new PIXI.Stage(0x5bb5ff);
 	renderer        = PIXI.autoDetectRenderer(800,330);
 	document.getElementById("page").appendChild(renderer.view);
@@ -15,36 +18,29 @@ function init()
 
   addGroundSnow();
 
-  penguin                = new Penguin(); 
+  penguin         = new Penguin(); 
 
   stage.addChild(snowStage);
   stage.addChild(penguin.stage);
   requestAnimFrame( animate );
 
   window.onkeydown = function(e){
-    if(e.keyCode == 38){
-      //up
-      //penguin.movement.up   = true;
-      //penguin.movement.down = false;
-      penguin.movement.jumping = true;
+    if(!penguin.movement.surprise){
+      if(e.keyCode == 37){
+        //left
+        penguin.movement.left  = true;
+        penguin.movement.right = false;
+      }
+      if(e.keyCode == 39){
+        //right
+        penguin.movement.left  = false;
+        penguin.movement.right = true;
+      }
     }
-    if(e.keyCode == 40){
-      //down
-      //penguin.movement.up   = false;
-      //penguin.movement.down = true;
-    }
-    if(e.keyCode == 37){
-      //left
-      penguin.movement.left  = true;
-      penguin.movement.right = false;
-      penguin.scale.x = -0.35;
-    }
-    if(e.keyCode == 39){
-      //right
-      penguin.movement.left  = false;
-      penguin.movement.right = true;
-      penguin.scale.x = 0.35;
-    }
+    //if(e.keyCode == 83){
+      ////s
+      //penguin.movement.surprise = true;
+    //}
     if(e.metaKey==true){
       return true;
     }
@@ -52,32 +48,90 @@ function init()
   };
 
   window.onkeyup = function(e){
-    if(e.keyCode == 38){
-      //up
-      penguin.movement.up   = false;
+    if(!penguin.movement.surprise){
+      if(e.keyCode == 38){
+        //up
+        penguin.movement.up   = false;
+      }
+      if(e.keyCode == 40){
+        //down
+        penguin.movement.down = false;
+      }
+      if(e.keyCode == 37){
+        //left
+        penguin.movement.left  = false;
+      }
+      if(e.keyCode == 39){
+        //right
+        penguin.movement.right = false;
+      }
     }
-    if(e.keyCode == 40){
-      //down
-      penguin.movement.down = false;
-    }
-    if(e.keyCode == 37){
-      //left
-      penguin.movement.left  = false;
-      penguin.rotation = 0;
-    }
-    if(e.keyCode == 39){
-      //right
-      penguin.movement.right = false;
-      penguin.rotation = 0;
-    }
-  }
-
-  window.onresize = function(e){
-    //renderer.resize(window.innerWidth,window.innerHeight);
-    //addGroundSnow();
   }
 }
 
+function animate() {
+  requestAnimFrame( animate );
+  renderer.render(stage);
+  var movePerFrame = 3;
+  var rotatePerFrame = 0.015;
+  var rotateMax      = 0.05;
+  var center         = renderer.view.width/2;
+
+  if(penguin.movement.surprise){
+    if(penguin.position.x < (center - movePerFrame) && !penguin.movement.stop){
+      penguin.movement.right = true;
+      penguin.movement.left  = false;
+    }
+    if(penguin.position.x > (center + movePerFrame) && !penguin.movement.stop){
+      penguin.movement.right = false;
+      penguin.movement.left  = true;
+    }
+    if(penguin.position.x >= center - movePerFrame && penguin.position.x <= center + movePerFrame){
+      penguin.movement.right = false;
+      penguin.movement.left  = false;
+      penguin.movement.stop  = true;
+      // change frames
+      if(!penguin.surpriseFramesLoaded){
+        penguin.switchToSurpriseFrames();
+        penguin.surpriseFramesLoaded = true;
+      }
+      else{
+        penguin.scale.x = penguin.scale.y = (penguin.scale.x += 0.05);
+        penguin.position.y += 15;
+        if(penguin.scale.x >= 10){
+          penguin.position.y = 300;
+          penguin.scale.x = penguin.scale.y = 0.35;
+          penguin.movement.surprise = false;
+          penguin.movement.stop = false;
+          penguin.switchToNormalFrames();
+          penguin.surpriseFramesLoaded=false;
+        }
+      }
+    }
+  }
+  if(penguin.movement.left){
+    penguin.position.x -= movePerFrame;
+    penguin.scale.x = -0.35;
+  }
+  if(penguin.movement.right){
+    penguin.position.x += movePerFrame;
+    penguin.scale.x = 0.35;
+  }
+  if(penguin.movement.left || penguin.movement.right){
+    if(penguin.movement.waddleRight ){
+      penguin.rotation += rotatePerFrame;
+      if(penguin.rotation >= rotateMax){
+        penguin.movement.waddleRight = false;
+      }
+    }
+    else{
+      penguin.rotation -= rotatePerFrame;
+      if(penguin.rotation <= -rotateMax){
+        penguin.movement.waddleRight = true;
+      }
+    }
+  }
+}
 function addGroundSnow()
 {
   var i=0;
@@ -93,38 +147,10 @@ function addGroundSnow()
   }
 }
 
-function animate() {
-  requestAnimFrame( animate );
-  renderer.render(stage);
 
-  //if(penguin.movement.up){
-    //penguin.position.y -= 1;
-  //}
-  //if(penguin.movement.down){
-    //penguin.position.y += 1;
-  //}
-  if(penguin.movement.jumping){
-  }
-  if(penguin.movement.left){
-    penguin.position.x -= 3;
-  }
-  if(penguin.movement.right){
-    penguin.position.x += 3;
-  }
-  if(penguin.movement.left || penguin.movement.right){
-    if(penguin.movement.waddleRight ){
-      penguin.rotation += 0.015;
-      if(penguin.rotation >= 0.05){
-        penguin.movement.waddleRight = false;
-      }
-    }
-    else{
-      penguin.rotation -= 0.015;
-      if(penguin.rotation <= -0.05){
-        penguin.movement.waddleRight = true;
-      }
-    }
-  }
+function surprise()
+{
+  penguin.movement.surprise = true;
 }
 
 init();
