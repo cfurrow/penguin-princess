@@ -64,3 +64,41 @@ Penguin.prototype.switchToNormalFrames  = function(){
   this.textures = this.penguinTextures;
   this.play();
 }
+Penguin.prototype.reset = function(){
+  this.position.y = 300;
+  this.scale.x = penguin.scale.y = 0.35;
+  this.movement.surprise = false;
+  this.movement.stop = false;
+  this.switchToNormalFrames();
+  this.surpriseFramesLoaded=false;
+}
+Penguin.prototype.getSurprised = function(){
+    var center = 400;
+    var movePerFrame = 5;
+    if(this.position.x < (center - movePerFrame) && !this.movement.stop){
+      this.movement.right = true;
+      this.movement.left  = false;
+    }
+    if(this.position.x > (center + movePerFrame) && !this.movement.stop){
+      this.movement.right = false;
+      this.movement.left  = true;
+    }
+    if(this.position.x >= center - movePerFrame && this.position.x <= center + movePerFrame){
+      this.movement.right = false;
+      this.movement.left  = false;
+      this.movement.stop  = true;
+      // change frames
+      if(!this.surpriseFramesLoaded){
+        this.switchToSurpriseFrames();
+        this.surpriseFramesLoaded = true;
+        this.rotation = 0;
+      }
+      else{
+        this.scale.x = this.scale.y = (this.scale.x += 0.05);
+        this.position.y += 15;
+        if(this.scale.x >= 10){
+          this.reset();
+        }
+      }
+    }
+}

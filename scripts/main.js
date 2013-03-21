@@ -78,36 +78,7 @@ function animate() {
   var center         = renderer.view.width/2;
 
   if(penguin.movement.surprise){
-    if(penguin.position.x < (center - movePerFrame) && !penguin.movement.stop){
-      penguin.movement.right = true;
-      penguin.movement.left  = false;
-    }
-    if(penguin.position.x > (center + movePerFrame) && !penguin.movement.stop){
-      penguin.movement.right = false;
-      penguin.movement.left  = true;
-    }
-    if(penguin.position.x >= center - movePerFrame && penguin.position.x <= center + movePerFrame){
-      penguin.movement.right = false;
-      penguin.movement.left  = false;
-      penguin.movement.stop  = true;
-      // change frames
-      if(!penguin.surpriseFramesLoaded){
-        penguin.switchToSurpriseFrames();
-        penguin.surpriseFramesLoaded = true;
-      }
-      else{
-        penguin.scale.x = penguin.scale.y = (penguin.scale.x += 0.05);
-        penguin.position.y += 15;
-        if(penguin.scale.x >= 10){
-          penguin.position.y = 300;
-          penguin.scale.x = penguin.scale.y = 0.35;
-          penguin.movement.surprise = false;
-          penguin.movement.stop = false;
-          penguin.switchToNormalFrames();
-          penguin.surpriseFramesLoaded=false;
-        }
-      }
-    }
+    penguin.getSurprised();
   }
   if(penguin.movement.left){
     penguin.position.x -= movePerFrame;
