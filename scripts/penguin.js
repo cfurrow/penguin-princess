@@ -94,7 +94,7 @@ Penguin.prototype.getSurprised = function(){
         this.rotation = 0;
       }
       else{
-        this.scale.x = this.scale.y = (this.scale.x += 0.05);
+        this.scale.x = this.scale.y = Math.abs(this.scale.x += 0.05);
         this.position.y += 15;
         if(this.scale.x >= 10){
           this.reset();
