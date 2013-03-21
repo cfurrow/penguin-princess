@@ -7,7 +7,7 @@ var snowTexture     = null;
 function init()
 {
   stage           = new PIXI.Stage(0x5bb5ff);
-	renderer        = PIXI.autoDetectRenderer(800,600);
+	renderer        = PIXI.autoDetectRenderer(800,330);
 	document.getElementById("page").appendChild(renderer.view);
 
   snowTexture     = new PIXI.Texture.fromImage("images/bg-snow.png");
