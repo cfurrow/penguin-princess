@@ -2,7 +2,6 @@ var stage           = null;
 var penguinTextures = [];
 var renderer        = null;
 var penguin         = null;
-var penguin2         = null;
 var penguinStage    = null;
 function init()
 {
@@ -13,9 +12,7 @@ function init()
   penguinTextures = loadFrames();
 
   penguin                = new PIXI.MovieClip(penguinTextures);
-  penguin2               = new PIXI.MovieClip(penguinTextures);
   penguin.animationSpeed  = 0.05;
-  penguin2.animationSpeed = 0.05
 
   penguinStage       = new PIXI.Stage();
   penguin.position.x =  150;
@@ -28,18 +25,9 @@ function init()
 
   penguin.gotoAndPlay(0);
 
-  penguin2.position.x =  150;
-  penguin2.position.y =  300;
-  penguin2.scale.x    =  0.35;
-  penguin2.scale.y    =  0.35;
-  penguin2.anchor.x   = 0.5;
-  penguin2.anchor.y   = 1;
-
-  penguin2.gotoAndPlay(0);
 
   penguinStage.addChild(penguin);
   stage.addChild(penguinStage);
-  stage.addChild(penguin2);
   requestAnimFrame( animate );
 
   window.onkeydown = function(e){
