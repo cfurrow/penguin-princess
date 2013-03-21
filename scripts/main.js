@@ -2,7 +2,6 @@ var stage           = null;
 var penguinTextures = [];
 var renderer        = null;
 var penguin         = null;
-var penguinStage    = null;
 var snowStage       = null;
 var snowTexture     = null;
 function init()
@@ -16,25 +15,10 @@ function init()
 
   addGroundSnow();
 
-  penguinTextures = loadFrames();
+  penguin                = new Penguin(); 
 
-  penguin                = new PIXI.MovieClip(penguinTextures);
-  penguin.animationSpeed  = 0.05;
-
-  penguinStage       = new PIXI.Stage();
-  penguin.position.x =  150;
-  penguin.position.y =  300;
-  penguin.scale.x    =  0.35;
-  penguin.scale.y    =  0.35;
-  penguin.anchor.x   = 0.5;
-  penguin.anchor.y   = 1;
-  penguin.movement   = { waddleRight:false };
-
-  penguin.gotoAndPlay(0);
-
-  penguinStage.addChild(penguin);
   stage.addChild(snowStage);
-  stage.addChild(penguinStage);
+  stage.addChild(penguin.stage);
   requestAnimFrame( animate );
 
   window.onkeydown = function(e){
@@ -141,26 +125,6 @@ function animate() {
       }
     }
   }
-}
-
-
-function loadFrames()
-{
-  var penguinTextures = [];
-  var len             = 4;
-  var i               = 0;
-  var texture         = null;
-
-  for(;i<len;i++){
-    texture = PIXI.Texture.fromImage("images/frame_" + i + "_512x512.png");
-    penguinTextures.push(texture);
-  }
-  for(i=3;i>=0;i--){
-    texture = PIXI.Texture.fromImage("images/frame_" + i + "_512x512.png");
-    penguinTextures.push(texture);
-  }
-
-  return penguinTextures;
 }
 
 init();
