@@ -9,7 +9,7 @@ function init()
   var konami      = new Konami();
   konami.code     = surprise;
   konami.load();
-  stage           = new PIXI.Stage(0x5bb5ff);
+  stage           = new PIXI.Stage(0x5bb5ff,true);
 	renderer        = PIXI.autoDetectRenderer(800,330);
 	document.getElementById("page").appendChild(renderer.view);
 
@@ -37,10 +37,6 @@ function init()
         penguin.movement.right = true;
       }
     }
-    //if(e.keyCode == 83){
-      ////s
-      //penguin.movement.surprise = true;
-    //}
     if(e.metaKey==true){
       return true;
     }
@@ -66,7 +62,22 @@ function init()
         penguin.movement.right = false;
       }
     }
-  }
+  };
+
+  renderer.view.onmousedown = function(e){
+    if((e.clientX - this.getBoundingClientRect().left) > penguin.position.x){
+      penguin.movement.right = true;
+      penguin.movement.left  = false;
+    }
+    else {
+      penguin.movement.right = false;
+      penguin.movement.left  = true;
+    }
+  };
+  renderer.view.onmouseup   = function(e){
+      penguin.movement.right = false;
+      penguin.movement.left  = false;
+  };
 }
 
 function animate() {
@@ -106,7 +117,6 @@ function animate() {
 function addGroundSnow()
 {
   var i=0;
-  console.log("addGroundSnow",snowStage.children.length);
   for(i=0; i< snowStage.children.length; i++){
     snowStage.removeChild(snowStage.children[i]);
   }
