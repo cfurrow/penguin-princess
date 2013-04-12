@@ -1,7 +1,7 @@
 function Penguin(textures) {
-  this.penguinTextures         = loadFrames();
-  this.penguinSurpriseTextures = loadSurpriseFrames();
-  var penguinStage            = new PIXI.Stage();
+  this.penguinTextures         = this.loadFrames();
+  this.penguinSurpriseTextures = this.loadSurpriseFrames();
+  var penguinStage             = new PIXI.Stage("",true);
 
   PIXI.MovieClip.call(this,this.penguinTextures);
 
@@ -15,55 +15,68 @@ function Penguin(textures) {
   this.movement   = { up:false, down:false, left:false, right:false, waddleRight:false, surprise:false, stop:false };
   this.surpriseFramesLoaded = false;
 
+  this.setInteractive(true);
+
+  this.tap   = this.handleTouch;
+  this.click = this.handleTouch;
+
   this.gotoAndPlay(0);
   penguinStage.addChild(this);
 
-  function loadFrames()
-  {
-    var penguinTextures = [];
-    var len             = 4;
-    var i               = 0;
-    var texture         = null;
-
-    for(;i<len;i++){
-      texture = PIXI.Texture.fromImage("images/frame_" + i + "_512x512.png");
-      penguinTextures.push(texture);
-    }
-    for(i=3;i>=0;i--){
-      texture = PIXI.Texture.fromImage("images/frame_" + i + "_512x512.png");
-      penguinTextures.push(texture);
-    }
-
-    return penguinTextures;
-  }
-
-  function loadSurpriseFrames()
-  {
-    var penguinTextures = [];
-    var len             = 9;
-    var i               = 0;
-    var texture         = null;
-
-    for(;i<len;i++){
-      texture = PIXI.Texture.fromImage("images/surprise_frame_" + i + "_512x512.png");
-      penguinTextures.push(texture);
-    }
-
-    return penguinTextures;
-  }
 }
 
 Penguin.constructor = Penguin;
 Penguin.prototype   = Object.create(PIXI.MovieClip.prototype);
 
+Penguin.prototype.loadFrames = function()
+{
+  var penguinTextures = [];
+  var len             = 4;
+  var i               = 0;
+  var texture         = null;
+
+  for(;i<len;i++){
+    texture = PIXI.Texture.fromImage("images/frame_" + i + "_512x512.png");
+    penguinTextures.push(texture);
+  }
+  for(i=3;i>=0;i--){
+    texture = PIXI.Texture.fromImage("images/frame_" + i + "_512x512.png");
+    penguinTextures.push(texture);
+  }
+
+  return penguinTextures;
+};
+
+Penguin.prototype.loadSurpriseFrames = function()
+{
+  var penguinTextures = [];
+  var len             = 9;
+  var i               = 0;
+  var texture         = null;
+
+  for(;i<len;i++){
+    texture = PIXI.Texture.fromImage("images/surprise_frame_" + i + "_512x512.png");
+    penguinTextures.push(texture);
+  }
+
+  return penguinTextures;
+};
+
+Penguin.prototype.handleTouch = function(touchdata){
+  // get mad
+  console.log(touchdata);
+};
+
 Penguin.prototype.switchToSurpriseFrames = function(){
   this.textures = this.penguinSurpriseTextures;
   this.play();
-}
+};
+
 Penguin.prototype.switchToNormalFrames  = function(){
   this.textures = this.penguinTextures;
   this.play();
-}
+};
+
 Penguin.prototype.reset = function(){
   this.position.y = 300;
   this.scale.x = penguin.scale.y = 0.35;
