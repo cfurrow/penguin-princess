@@ -65,6 +65,7 @@ function init()
   };
 
   renderer.view.onmousedown = function(e){
+    e.preventDefault();
     if((e.clientX - this.getBoundingClientRect().left) > penguin.position.x){
       penguin.movement.right = true;
       penguin.movement.left  = false;
@@ -78,6 +79,31 @@ function init()
       penguin.movement.right = false;
       penguin.movement.left  = false;
   };
+
+  var touchstart = function(e){
+    e.preventDefault();
+    if(e.clientX){
+      renderer.view.onmousedown.call(self,e);
+    }
+    else{
+      var i=0;
+      var len = e.targetTouches.length;
+      var touch;
+      var self = this;
+      for(;i<len;i++){
+        touch = e.targetTouches[i];
+        touch.preventDefault = function(){};
+        renderer.view.onmousedown.call(self,touch);
+      }
+    }
+  };
+  var touchend = function(e){
+    e.preventDefault();  
+    renderer.view.onmouseup.call(this,e);
+  };
+  renderer.view.addEventListener("touchstart",touchstart,false);
+  renderer.view.addEventListener("touchend",touchend,false);
+  renderer.view.addEventListener("touchcancel",touchend,false);
 }
 
 function animate() {
