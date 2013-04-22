@@ -4,6 +4,7 @@ var renderer        = null;
 var penguin         = null;
 var snowStage       = null;
 var snowTexture     = null;
+var meter           = null;
 function init()
 {
   var konami      = new Konami();
@@ -12,6 +13,8 @@ function init()
   stage           = new PIXI.Stage(0x5bb5ff,true);
 	renderer        = PIXI.autoDetectRenderer(800,330);
 	document.getElementById("page").appendChild(renderer.view);
+
+  meter =  new FPSMeter(document.getElementById("fps"));
 
   snowTexture     = new PIXI.Texture.fromImage("images/bg-snow.png");
   snowStage       = new PIXI.Stage(0xFFFFFF);
@@ -107,6 +110,7 @@ function init()
 }
 
 function animate() {
+  meter.tickStart();
   requestAnimFrame( animate );
   renderer.render(stage);
   var movePerFrame = 3;
@@ -139,6 +143,7 @@ function animate() {
       }
     }
   }
+  meter.tick();
 }
 function addGroundSnow()
 {

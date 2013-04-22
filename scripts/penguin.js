@@ -69,11 +69,13 @@ Penguin.prototype.handleTouch = function(touchdata){
 
 Penguin.prototype.switchToSurpriseFrames = function(){
   this.textures = this.penguinSurpriseTextures;
-  this.play();
+  this.loop = false;
+  this.gotoAndPlay(0);
 };
 
 Penguin.prototype.switchToNormalFrames  = function(){
   this.textures = this.penguinTextures;
+  this.loop = true;
   this.play();
 };
 
