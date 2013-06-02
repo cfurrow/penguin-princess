@@ -69,8 +69,7 @@ Penguin.prototype.loadSurpriseFrames = function()
 };
 
 Penguin.prototype.handleTouch = function(touchdata){
-  // get mad
-  console.log(touchdata);
+  this.playFart();
 };
 
 Penguin.prototype.switchToSurpriseFrames = function(){
