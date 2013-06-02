@@ -148,6 +148,13 @@ Penguin.prototype.tick = function(){
       }
     }
   }
+  if(this.farting){
+    this.fart();
+  }
+};
+
+Penguin.prototype.fart = function(){
+  console.log('faaaaarting');
 };
 
 Penguin.prototype.onKeyUp = function(e){
