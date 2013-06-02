@@ -122,9 +122,7 @@ Penguin.prototype.getSurprised = function(){
     }
 };
 
-Penguin.prototype.tick = function(renderer){
-  var center         = renderer.view.width/2;
-
+Penguin.prototype.tick = function(){
   if(this.movement.surprise){
     this.getSurprised();
   }

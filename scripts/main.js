@@ -83,7 +83,7 @@ function animate() {
   requestAnimFrame( animate );
   renderer.render(stage);
   
-  penguin.tick(renderer);
+  penguin.tick();
 
   if(showMeter){ meter.tick(); }
 }
