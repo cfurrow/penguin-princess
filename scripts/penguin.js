@@ -5,6 +5,9 @@ function Penguin(textures) {
 
   PIXI.MovieClip.call(this,this.penguinTextures);
 
+  this.movePerFrame   = 3;
+  this.rotatePerFrame = 0.015;
+  this.rotateMax      = 0.05;
   this.animationSpeed  = 0.05;
   this.position.x =  150;
   this.position.y =  300;
@@ -117,34 +120,32 @@ Penguin.prototype.getSurprised = function(){
         }
       }
     }
-}
-Penguin.prototype.render = function(renderer){
-  var movePerFrame   = 3,
-      rotatePerFrame = 0.015,
-      rotateMax      = 0.05,
-      center         = renderer.view.width/2;
+};
+
+Penguin.prototype.tick = function(renderer){
+  var center         = renderer.view.width/2;
 
   if(this.movement.surprise){
     this.getSurprised();
   }
   if(this.movement.left){
-    this.position.x -= movePerFrame;
+    this.position.x -= this.movePerFrame;
     this.scale.x     = -0.35;
   }
   if(this.movement.right){
-    this.position.x += movePerFrame;
+    this.position.x += this.movePerFrame;
     this.scale.x     = 0.35;
   }
   if(this.movement.left || this.movement.right){
     if(this.movement.waddleRight ){
-      this.rotation += rotatePerFrame;
-      if(this.rotation >= rotateMax){
+      this.rotation += this.rotatePerFrame;
+      if(this.rotation >= this.rotateMax){
         this.movement.waddleRight = false;
       }
     }
     else{
-      this.rotation -= rotatePerFrame;
-      if(this.rotation <= -rotateMax){
+      this.rotation -= this.rotatePerFrame;
+      if(this.rotation <= -this.rotateMax){
         this.movement.waddleRight = true;
       }
     }
