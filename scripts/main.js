@@ -32,18 +32,7 @@ function init()
   requestAnimFrame( animate );
 
   window.onkeydown = function(e){
-    if(!penguin.movement.surprise){
-      if(e.keyCode == 37){
-        //left
-        penguin.movement.left  = true;
-        penguin.movement.right = false;
-      }
-      if(e.keyCode == 39){
-        //right
-        penguin.movement.left  = false;
-        penguin.movement.right = true;
-      }
-    }
+    penguin.onKeyDown(e);
     if(e.metaKey==true){
       return true;
     }
@@ -51,40 +40,15 @@ function init()
   };
 
   window.onkeyup = function(e){
-    if(!penguin.movement.surprise){
-      if(e.keyCode == 38){
-        //up
-        penguin.movement.up   = false;
-      }
-      if(e.keyCode == 40){
-        //down
-        penguin.movement.down = false;
-      }
-      if(e.keyCode == 37){
-        //left
-        penguin.movement.left  = false;
-      }
-      if(e.keyCode == 39){
-        //right
-        penguin.movement.right = false;
-      }
-    }
+    penguin.onKeyUp(e);
   };
 
   renderer.view.onmousedown = function(e){
     e.preventDefault();
-    if((e.clientX - this.getBoundingClientRect().left) > penguin.position.x){
-      penguin.movement.right = true;
-      penguin.movement.left  = false;
-    }
-    else {
-      penguin.movement.right = false;
-      penguin.movement.left  = true;
-    }
+    penguin.onMouseDown(e,this);
   };
   renderer.view.onmouseup   = function(e){
-      penguin.movement.right = false;
-      penguin.movement.left  = false;
+    penguin.onMouseUp(e,this);
   };
 
   var touchstart = function(e){
@@ -118,36 +82,9 @@ function animate() {
 
   requestAnimFrame( animate );
   renderer.render(stage);
-  var movePerFrame   = 3,
-      rotatePerFrame = 0.015,
-      rotateMax      = 0.05,
-      center         = renderer.view.width/2;
+  
+  penguin.render(renderer);
 
-  if(penguin.movement.surprise){
-    penguin.getSurprised();
-  }
-  if(penguin.movement.left){
-    penguin.position.x -= movePerFrame;
-    penguin.scale.x     = -0.35;
-  }
-  if(penguin.movement.right){
-    penguin.position.x += movePerFrame;
-    penguin.scale.x     = 0.35;
-  }
-  if(penguin.movement.left || penguin.movement.right){
-    if(penguin.movement.waddleRight ){
-      penguin.rotation += rotatePerFrame;
-      if(penguin.rotation >= rotateMax){
-        penguin.movement.waddleRight = false;
-      }
-    }
-    else{
-      penguin.rotation -= rotatePerFrame;
-      if(penguin.rotation <= -rotateMax){
-        penguin.movement.waddleRight = true;
-      }
-    }
-  }
   if(showMeter){ meter.tick(); }
 }
 function addGroundSnow()

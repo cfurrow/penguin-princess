@@ -14,6 +14,7 @@ function Penguin(textures) {
   this.anchor.y   = 1;
   this.movement   = { up:false, down:false, left:false, right:false, waddleRight:false, surprise:false, stop:false };
   this.surpriseFramesLoaded = false;
+  this.farting    = false;
 
   this.setInteractive(true);
 
@@ -116,4 +117,96 @@ Penguin.prototype.getSurprised = function(){
         }
       }
     }
+}
+Penguin.prototype.render = function(renderer){
+  var movePerFrame   = 3,
+      rotatePerFrame = 0.015,
+      rotateMax      = 0.05,
+      center         = renderer.view.width/2;
+
+  if(this.movement.surprise){
+    this.getSurprised();
+  }
+  if(this.movement.left){
+    this.position.x -= movePerFrame;
+    this.scale.x     = -0.35;
+  }
+  if(this.movement.right){
+    this.position.x += movePerFrame;
+    this.scale.x     = 0.35;
+  }
+  if(this.movement.left || this.movement.right){
+    if(this.movement.waddleRight ){
+      this.rotation += rotatePerFrame;
+      if(this.rotation >= rotateMax){
+        this.movement.waddleRight = false;
+      }
+    }
+    else{
+      this.rotation -= rotatePerFrame;
+      if(this.rotation <= -rotateMax){
+        this.movement.waddleRight = true;
+      }
+    }
+  }
+};
+
+Penguin.prototype.onKeyUp = function(e){
+  if(!penguin.movement.surprise){
+    if(e.keyCode == 38){
+      //up
+      this.movement.up   = false;
+    }
+    if(e.keyCode == 40){
+      //down
+      this.movement.down = false;
+    }
+    if(e.keyCode == 37){
+      //left
+      this.movement.left  = false;
+    }
+    if(e.keyCode == 39){
+      //right
+      this.movement.right = false;
+    }
+    if(e.keyCode == 32){
+      //space
+      this.farting = false;
+    }
+  }
+};
+
+Penguin.prototype.onKeyDown = function(e){
+  if(!this.movement.surprise){
+    if(e.keyCode == 37){
+      //left
+      this.movement.left  = true;
+      this.movement.right = false;
+    }
+    if(e.keyCode == 39){
+      //right
+      this.movement.left  = false;
+      this.movement.right = true;
+    }
+    if(e.keyCode == 32){
+      // space
+      this.farting = true;
+    }
+  }
+};
+
+Penguin.prototype.onMouseDown = function(e,canvas){
+  if((e.clientX - canvas.getBoundingClientRect().left) > this.position.x){
+    this.movement.right = true;
+    this.movement.left  = false;
+  }
+  else {
+    this.movement.right = false;
+    this.movement.left  = true;
+  }
+};
+
+Penguin.prototype.onMouseUp = function(e){
+  this.movement.right = false;
+  this.movement.left  = false;
 }
