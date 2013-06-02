@@ -27,6 +27,8 @@ function Penguin(textures) {
   this.gotoAndPlay(0);
   penguinStage.addChild(this);
 
+  this.loadFart();
+
 }
 
 Penguin.constructor = Penguin;
@@ -154,7 +156,7 @@ Penguin.prototype.tick = function(){
 };
 
 Penguin.prototype.fart = function(){
-  console.log('faaaaarting');
+  this.playFart();
 };
 
 Penguin.prototype.onKeyUp = function(e){
