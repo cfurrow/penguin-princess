@@ -16,10 +16,6 @@ function init()
 	renderer        = PIXI.autoDetectRenderer(800,330);
 	document.getElementById("page").appendChild(renderer.view);
 
-  if(showMeter){
-    meter         =  new FPSMeter(document.getElementById("fps"));
-  }
-
   snowTexture     = new PIXI.Texture.fromImage("images/bg-snow.png");
   snowStage       = new PIXI.Stage(0xFFFFFF);
 
@@ -89,14 +85,14 @@ function init()
 }
 
 function animate() {
-  if(showMeter){ meter.tickStart(); }
+  if(meter){ meter.tickStart(); }
 
   requestAnimFrame( animate );
   renderer.render(stage);
   
   penguin.tick();
 
-  if(showMeter){ meter.tick(); }
+  if(meter){ meter.tick(); }
 }
 function addGroundSnow()
 {
