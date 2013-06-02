@@ -36,6 +36,16 @@ function init()
     if(e.metaKey==true){
       return true;
     }
+    if(e.keyCode == 70){
+      showMeter = showMeter ? false : true;
+      if(showMeter && (typeof(meter) === 'undefined' || meter === null)) {
+        meter =  new FPSMeter(document.getElementById("fps"));
+      }
+      if(!showMeter){
+        meter = null;
+        document.getElementById('fps').innerHTML = '';
+      }
+    }
     return false;
   };
 
@@ -47,6 +57,7 @@ function init()
     e.preventDefault();
     penguin.onMouseDown(e,this);
   };
+
   renderer.view.onmouseup   = function(e){
     penguin.onMouseUp(e,this);
   };
