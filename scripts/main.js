@@ -1,10 +1,12 @@
-var stage           = null;
-var penguinTextures = [];
-var renderer        = null;
-var penguin         = null;
-var snowStage       = null;
-var snowTexture     = null;
-var meter           = null;
+var stage           = null,
+    penguinTextures = [],
+    renderer        = null,
+    penguin         = null,
+    snowStage       = null,
+    snowTexture     = null,
+    meter           = null,
+    showMeter       = false;
+
 function init()
 {
   var konami      = new Konami();
@@ -14,7 +16,9 @@ function init()
 	renderer        = PIXI.autoDetectRenderer(800,330);
 	document.getElementById("page").appendChild(renderer.view);
 
-  meter =  new FPSMeter(document.getElementById("fps"));
+  if(showMeter){
+    meter         =  new FPSMeter(document.getElementById("fps"));
+  }
 
   snowTexture     = new PIXI.Texture.fromImage("images/bg-snow.png");
   snowStage       = new PIXI.Stage(0xFFFFFF);
@@ -110,24 +114,25 @@ function init()
 }
 
 function animate() {
-  meter.tickStart();
+  if(showMeter){ meter.tickStart(); }
+
   requestAnimFrame( animate );
   renderer.render(stage);
-  var movePerFrame = 3;
-  var rotatePerFrame = 0.015;
-  var rotateMax      = 0.05;
-  var center         = renderer.view.width/2;
+  var movePerFrame   = 3,
+      rotatePerFrame = 0.015,
+      rotateMax      = 0.05,
+      center         = renderer.view.width/2;
 
   if(penguin.movement.surprise){
     penguin.getSurprised();
   }
   if(penguin.movement.left){
     penguin.position.x -= movePerFrame;
-    penguin.scale.x = -0.35;
+    penguin.scale.x     = -0.35;
   }
   if(penguin.movement.right){
     penguin.position.x += movePerFrame;
-    penguin.scale.x = 0.35;
+    penguin.scale.x     = 0.35;
   }
   if(penguin.movement.left || penguin.movement.right){
     if(penguin.movement.waddleRight ){
@@ -143,7 +148,7 @@ function animate() {
       }
     }
   }
-  meter.tick();
+  if(showMeter){ meter.tick(); }
 }
 function addGroundSnow()
 {
@@ -152,13 +157,12 @@ function addGroundSnow()
     snowStage.removeChild(snowStage.children[i]);
   }
   for(i = 0; i < window.innerWidth / 400; i++){
-    var snow            = new PIXI.Sprite(snowTexture,{x:0,y:0,width:400,height:100});
+    var snow        = new PIXI.Sprite(snowTexture,{x:0,y:0,width:400,height:100});
     snow.position.x = i * 400;
     snow.position.y = 230;
     snowStage.addChild(snow);
   }
 }
-
 
 function surprise()
 {
