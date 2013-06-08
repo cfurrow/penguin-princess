@@ -1,3 +1,5 @@
+window.CANVASWIDTH  = 800;
+window.CANVASHEIGHT = 330;
 var stage           = null,
     penguinTextures = [],
     renderer        = null,
@@ -5,7 +7,8 @@ var stage           = null,
     snowStage       = null,
     snowTexture     = null,
     meter           = null,
-    showMeter       = false;
+    showMeter       = false,
+    fishes          = [];
 
 function init()
 {
@@ -13,7 +16,7 @@ function init()
   konami.code     = surprise;
   konami.load();
   stage           = new PIXI.Stage(0x5bb5ff,true);
-	renderer        = PIXI.autoDetectRenderer(800,330);
+	renderer        = PIXI.autoDetectRenderer(window.CANVASWIDTH,window.CANVASHEIGHT);
 	document.getElementById("page").appendChild(renderer.view);
 
   snowTexture     = new PIXI.Texture.fromImage("images/bg-snow.png");
@@ -22,9 +25,17 @@ function init()
   addGroundSnow();
 
   penguin         = new Penguin(); 
+  fishes.push( new Fish(0) );
+  fishes.push( new Fish(200) );
+  fishes.push( new Fish(600) );
+  fishes.push( new Fish(700) );
 
   stage.addChild(snowStage);
   stage.addChild(penguin.stage);
+
+  for(var i=0; i< fishes.length; i++){
+    stage.addChild(fishes[i].stage);
+  }
   requestAnimFrame( animate );
 
   window.onkeydown = function(e){
@@ -58,27 +69,33 @@ function init()
     penguin.onMouseUp(e,this);
   };
 
-  var touchstart = function(e){
-    e.preventDefault();
-    if(e.clientX){
-      renderer.view.onmousedown.call(self,e);
+  addListeners();
+
+}
+var touchstart = function(e){
+  e.preventDefault();
+  if(e.clientX){
+    renderer.view.onmousedown.call(self,e);
+  }
+  else{
+    var i=0;
+    var len = e.targetTouches.length;
+    var touch;
+    var self = this;
+    for(;i<len;i++){
+      touch = e.targetTouches[i];
+      touch.preventDefault = function(){};
+      renderer.view.onmousedown.call(self,touch);
     }
-    else{
-      var i=0;
-      var len = e.targetTouches.length;
-      var touch;
-      var self = this;
-      for(;i<len;i++){
-        touch = e.targetTouches[i];
-        touch.preventDefault = function(){};
-        renderer.view.onmousedown.call(self,touch);
-      }
-    }
-  };
-  var touchend = function(e){
-    e.preventDefault();  
-    renderer.view.onmouseup.call(this,e);
-  };
+  }
+};
+
+var touchend = function(e){
+  e.preventDefault();  
+  renderer.view.onmouseup.call(this,e);
+};
+
+function addListeners(){
   renderer.view.addEventListener("touchstart",touchstart,false);
   renderer.view.addEventListener("touchend",touchend,false);
   renderer.view.addEventListener("touchcancel",touchend,false);
@@ -91,9 +108,13 @@ function animate() {
   renderer.render(stage);
   
   penguin.tick();
+  for(var i=0; i<fishes.length; i++){
+    fishes[i].tick();
+  }
 
   if(meter){ meter.tick(); }
 }
+
 function addGroundSnow()
 {
   var i = 0,

@@ -22,8 +22,11 @@
   //     }, onError);
   //   }
   //   request.send();
-      this.audio = new Audio('audio/fart.ogg');
-      this.audio.ended = function(){this.fartPlaying = false;}
+      this.audio = new Audio('audio/fart.mp3');
+      this.audio.ended = function(){
+        this.fartPlaying = false;
+        SimpleEvents.trigger('penguin.fart.end');
+      }
    }
 
   function onError(error){ console.log('sound error' + error); }

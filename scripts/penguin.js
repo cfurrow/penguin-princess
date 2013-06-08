@@ -5,9 +5,7 @@ function Penguin(textures) {
 
   PIXI.MovieClip.call(this,this.penguinTextures);
 
-  this.movePerFrame   = 3;
-  this.rotatePerFrame = 0.015;
-  this.rotateMax      = 0.05;
+  // pixi.js
   this.animationSpeed  = 0.05;
   this.position.x =  150;
   this.position.y =  300;
@@ -15,6 +13,11 @@ function Penguin(textures) {
   this.scale.y    =  0.35;
   this.anchor.x   = 0.5;
   this.anchor.y   = 1;
+
+  // custom
+  this.movePerFrame   = 3;
+  this.rotatePerFrame = 0.015;
+  this.rotateMax      = 0.05;
   this.movement   = { up:false, down:false, left:false, right:false, waddleRight:false, surprise:false, stop:false };
   this.surpriseFramesLoaded = false;
   this.farting    = false;
@@ -28,7 +31,6 @@ function Penguin(textures) {
   penguinStage.addChild(this);
 
   this.loadFart();
-
 }
 
 Penguin.constructor = Penguin;
@@ -69,6 +71,8 @@ Penguin.prototype.loadSurpriseFrames = function()
 };
 
 Penguin.prototype.handleTouch = function(touchdata){
+  SimpleEvents.trigger('penguin.touched');
+  SimpleEvents.trigger('penguin.fart');
   this.playFart();
 };
 
@@ -93,8 +97,9 @@ Penguin.prototype.reset = function(){
   this.surpriseFramesLoaded=false;
 }
 Penguin.prototype.getSurprised = function(){
+    SimpleEvents.trigger('penguin.surprised');
     var center = 400;
-    var movePerFrame = 5;
+    var movePerFrame = this.movePerFrame + 2;
     if(this.position.x < (center - movePerFrame) && !this.movement.stop){
       this.movement.right = true;
       this.movement.left  = false;
@@ -155,6 +160,7 @@ Penguin.prototype.tick = function(){
 };
 
 Penguin.prototype.fart = function(){
+  SimpleEvents.trigger('penguin.fart');
   this.playFart();
 };
 
@@ -169,6 +175,7 @@ Penguin.prototype.onKeyUp = function(e){
       this.movement.down = false;
     }
     if(e.keyCode == 37){
+
       //left
       this.movement.left  = false;
     }
@@ -187,11 +194,13 @@ Penguin.prototype.onKeyDown = function(e){
   if(!this.movement.surprise){
     if(e.keyCode == 37){
       //left
+      SimpleEvents.trigger('penguin.move.left',e);
       this.movement.left  = true;
       this.movement.right = false;
     }
     if(e.keyCode == 39){
       //right
+      SimpleEvents.trigger('penguin.move.right',e);
       this.movement.left  = false;
       this.movement.right = true;
     }
@@ -204,10 +213,12 @@ Penguin.prototype.onKeyDown = function(e){
 
 Penguin.prototype.onMouseDown = function(e,canvas){
   if((e.clientX - canvas.getBoundingClientRect().left) > this.position.x){
+    SimpleEvents.trigger('penguin.move.right');
     this.movement.right = true;
     this.movement.left  = false;
   }
   else {
+    SimpleEvents.trigger('penguin.move.left');
     this.movement.right = false;
     this.movement.left  = true;
   }
