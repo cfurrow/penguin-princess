@@ -96,13 +96,15 @@ function animate() {
 }
 function addGroundSnow()
 {
-  var i=0;
-  for(i=0; i< snowStage.children.length; i++){
+  var i = 0,
+      snowWidth = 400,
+      snowHeight = 100;
+  for(i=0; i<  snowStage.children.length; i++){
     snowStage.removeChild(snowStage.children[i]);
   }
-  for(i = 0; i < window.innerWidth / 400; i++){
-    var snow        = new PIXI.Sprite(snowTexture,{x:0,y:0,width:400,height:100});
-    snow.position.x = i * 400;
+  for(i = 0; i < window.innerWidth / snowWidth; i++){
+    var snow        = new PIXI.Sprite(snowTexture,{x:0,y:0,width:snowWidth,height:snowHeight});
+    snow.position.x = i * snowWidth;
     snow.position.y = 230;
     snowStage.addChild(snow);
   }
