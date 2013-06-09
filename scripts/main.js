@@ -6,6 +6,7 @@ var stage           = null,
     penguin         = null,
     snowStage       = null,
     snowTexture     = null,
+    waterStage      = null,
     meter           = null,
     showMeter       = false,
     fishes          = [];
@@ -17,25 +18,25 @@ function init()
   konami.load();
   stage           = new PIXI.Stage(0x5bb5ff,true);
 	renderer        = PIXI.autoDetectRenderer(window.CANVASWIDTH,window.CANVASHEIGHT);
-	document.getElementById("page").appendChild(renderer.view);
+	document.getElementById("scene").appendChild(renderer.view);
 
   snowTexture     = new PIXI.Texture.fromImage("images/bg-snow.png");
   snowStage       = new PIXI.Stage(0xFFFFFF);
 
   addGroundSnow();
+  addWater();
 
-  penguin         = new Penguin(); 
+  penguin = new Penguin(); 
   fishes.push( new Fish(0) );
   fishes.push( new Fish(200) );
   fishes.push( new Fish(600) );
   fishes.push( new Fish(700) );
 
   stage.addChild(snowStage);
-  stage.addChild(penguin.stage);
-
   for(var i=0; i< fishes.length; i++){
     stage.addChild(fishes[i].stage);
   }
+  stage.addChild(penguin.stage);
   requestAnimFrame( animate );
 
   window.onkeydown = function(e){
@@ -133,6 +134,41 @@ function addGroundSnow()
     snow.position.y = 230;
     snowStage.addChild(snow);
   }
+}
+
+function addWater()
+{
+  var bubbleTextures = [];
+  var len             = 11;
+  var i               = 0;
+  var texture         = null;
+  var bubbles          = null;
+  var bubbleWidth      = 64;
+  var bubbleHeight     = 128;
+  var numBubblesNeeded = Math.floor(window.CANVASWIDTH / bubbleWidth)+1;
+  waterStage = new PIXI.Stage(0x3474B7);
+  waterStage.position.y = 300;
+  waterStage.position.x = 0;
+
+  for(;i<len;i++){
+    texture = PIXI.Texture.fromImage("images/bubbles_frame_" + i + "_128x64.png");
+    bubbleTextures.push(texture);
+  }
+  for(i=0;i<numBubblesNeeded;i++)
+  {
+    bubbles = new PIXI.MovieClip(bubbleTextures,{x:0,y:0,width:bubbleWidth,height:bubbleHeight});
+    bubbles.position.x = i * bubbleWidth;
+    bubbles.position.y = window.CANVASHEIGHT;
+    bubbles.anchor.y = 1;
+    bubbles.scale.y  = 1.6;
+    bubbles.scale.x  = 2;
+    bubbles.animationSpeed  = 0.07;
+    bubbles.gotoAndPlay(10*Math.random());
+    waterStage.addChild(bubbles);
+  }
+  
+  waterStage.setBackgroundColor(0x3474B7);
+  stage.addChild(waterStage);
 }
 
 function surprise()
