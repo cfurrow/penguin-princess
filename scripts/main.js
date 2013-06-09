@@ -3,7 +3,7 @@ window.CANVASHEIGHT = 430;
 var stage           = null,
     penguinTextures = [],
     renderer        = null,
-    penguin         = null,
+    penguin         = {tick:function(){}},
     snowStage       = null,
     snowTexture     = null,
     waterStage      = null,
@@ -13,31 +13,51 @@ var stage           = null,
 
 function init()
 {
-  var konami      = new Konami();
-  konami.code     = surprise;
-  konami.load();
   stage           = new PIXI.Stage(0x5bb5ff,true);
 	renderer        = PIXI.autoDetectRenderer(window.CANVASWIDTH,window.CANVASHEIGHT);
 	document.getElementById("scene").appendChild(renderer.view);
-
-  snowTexture     = new PIXI.Texture.fromImage("images/bg-snow.png");
-  snowStage       = new PIXI.Stage(0xFFFFFF);
-
-  addGroundSnow();
-  addWater();
-
-  penguin = new Penguin(); 
-  fishes.push( new Fish(0) );
-  fishes.push( new Fish(200) );
-  fishes.push( new Fish(600) );
-  fishes.push( new Fish(700) );
-
-  stage.addChild(snowStage);
-  for(var i=0; i< fishes.length; i++){
-    stage.addChild(fishes[i].stage);
-  }
-  stage.addChild(penguin.stage);
+  // show loading graphic?
+  var text = new PIXI.Text('Loading...');
+  text.setStyle({fill:"#ffffff"});
+  text.position.x = (window.CANVASWIDTH / 2 ) - text.width / 2;
+  text.position.y = (window.CANVASHEIGHT / 2);
+  stage.addChild(text);
   requestAnimFrame( animate );
+
+  SimpleEvents.listen("assets.loaded",function(){
+    stage.removeChild(text);
+
+    addGroundSnow();
+    addWater();
+    addFish();
+
+    penguin = new Penguin(); 
+    stage.addChild(penguin.stage);
+   
+    setupInteraction();
+    addListeners();
+  },this);
+  loadAssets();
+
+}
+function setupInteraction(){
+  var touchstart = function(e){
+    e.preventDefault();
+    if(e.clientX){
+      renderer.view.onmousedown.call(self,e);
+    }
+    else{
+      var i=0;
+      var len = e.targetTouches.length;
+      var touch;
+      var self = this;
+      for(;i<len;i++){
+        touch = e.targetTouches[i];
+        touch.preventDefault = function(){};
+        renderer.view.onmousedown.call(self,touch);
+      }
+    }
+  };
 
   window.onkeydown = function(e){
     penguin.onKeyDown(e);
@@ -70,36 +90,18 @@ function init()
     penguin.onMouseUp(e,this);
   };
 
-  addListeners();
-
-}
-var touchstart = function(e){
-  e.preventDefault();
-  if(e.clientX){
-    renderer.view.onmousedown.call(self,e);
-  }
-  else{
-    var i=0;
-    var len = e.targetTouches.length;
-    var touch;
-    var self = this;
-    for(;i<len;i++){
-      touch = e.targetTouches[i];
-      touch.preventDefault = function(){};
-      renderer.view.onmousedown.call(self,touch);
-    }
-  }
-};
-
-var touchend = function(e){
-  e.preventDefault();  
-  renderer.view.onmouseup.call(this,e);
-};
-
-function addListeners(){
+  var touchend = function(e){
+    e.preventDefault();  
+    renderer.view.onmouseup.call(this,e);
+  };
   renderer.view.addEventListener("touchstart",touchstart,false);
   renderer.view.addEventListener("touchend",touchend,false);
   renderer.view.addEventListener("touchcancel",touchend,false);
+}
+
+
+function addListeners(){
+
 
   window.fartCount = 0;
   SimpleEvents.listen('penguin.fart',function(){console.log('fart! ',window.fartCount++);});
@@ -122,6 +124,8 @@ function animate() {
 
 function addGroundSnow()
 {
+  snowTexture     = new PIXI.Texture.fromImage("images/bg-snow.png");
+  snowStage       = new PIXI.Stage(0xFFFFFF);
   var i = 0,
       snowWidth = 400,
       snowHeight = 100;
@@ -133,6 +137,19 @@ function addGroundSnow()
     snow.position.x = i * snowWidth;
     snow.position.y = 230;
     snowStage.addChild(snow);
+  }
+  stage.addChild(snowStage);
+}
+
+function addFish()
+{
+  fishes.push( new Fish(0) );
+  fishes.push( new Fish(200) );
+  fishes.push( new Fish(600) );
+  fishes.push( new Fish(700) );
+
+  for(var i=0; i< fishes.length; i++){
+    stage.addChild(fishes[i].stage);
   }
 }
 
@@ -154,6 +171,7 @@ function addWater()
     texture = PIXI.Texture.fromImage("images/bubbles_frame_" + i + "_128x64.png");
     bubbleTextures.push(texture);
   }
+
   for(i=0;i<numBubblesNeeded;i++)
   {
     bubbles = new PIXI.MovieClip(bubbleTextures,{x:0,y:0,width:bubbleWidth,height:bubbleHeight});
@@ -167,13 +185,7 @@ function addWater()
     waterStage.addChild(bubbles);
   }
   
-  waterStage.setBackgroundColor(0x3474B7);
   stage.addChild(waterStage);
-}
-
-function surprise()
-{
-  penguin.movement.surprise = true;
 }
 
 init();

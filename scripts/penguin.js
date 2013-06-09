@@ -31,6 +31,9 @@ function Penguin(textures) {
   penguinStage.addChild(this);
 
   this.loadFart();
+  var konami      = new Konami();
+  konami.code     = this.setSurprised;
+  konami.load();
 }
 
 Penguin.constructor = Penguin;
@@ -225,4 +228,9 @@ Penguin.prototype.onMouseDown = function(e,canvas){
 Penguin.prototype.onMouseUp = function(e){
   this.movement.right = false;
   this.movement.left  = false;
+}
+
+Penguin.prototype.setSurprised = function()
+{
+  this.movement.surprise = true;
 }
