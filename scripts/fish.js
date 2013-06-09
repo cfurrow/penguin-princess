@@ -17,10 +17,7 @@ function Fish(x,y){
   this.movement         = { left: false, right: false, falling: false, jumping: false };
   this.defaultY         = this.position.y;
 
-  this.movementPerFrame = 3*Math.random();
-  if(this.movementPerFrame == 0){
-    this.movementPerFrame = 1;
-  }
+  this.movementPerFrame = getRandomInt(1,3)
 
   if(100*Math.random() < 50){
     this.movement.left = true;
@@ -33,11 +30,7 @@ function Fish(x,y){
   fishStage.addChild(this);
 
   SimpleEvents.listen('penguin.fart',this.handlePenguinFart,this);
-  SimpleEvents.listen('penguin.fart.end',function(){ 
-    this.movement.falling = true;
-    this.movement.jumping = false; 
-    this.position.y = this.defaultY;
-  });
+
 }
 
 Fish.constructor = Fish;
@@ -119,13 +112,11 @@ Fish.prototype.tick = function(){
     }
     
   }
-  
-  
 };
 
 Fish.prototype.handlePenguinFart = function(){
   var weight = Math.random() * 100;
-  if(weight <= 10){
+  if(weight <= 20){
     if(this.position.y >= 100 && !this.movement.falling){
       this.movement.falling = false;
       this.movement.jumping = true;  

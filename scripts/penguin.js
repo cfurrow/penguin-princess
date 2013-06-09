@@ -72,7 +72,6 @@ Penguin.prototype.loadSurpriseFrames = function()
 
 Penguin.prototype.handleTouch = function(touchdata){
   SimpleEvents.trigger('penguin.touched');
-  SimpleEvents.trigger('penguin.fart');
   this.playFart();
 };
 
@@ -160,7 +159,6 @@ Penguin.prototype.tick = function(){
 };
 
 Penguin.prototype.fart = function(){
-  SimpleEvents.trigger('penguin.fart');
   this.playFart();
 };
 

@@ -99,6 +99,10 @@ function addListeners(){
   renderer.view.addEventListener("touchstart",touchstart,false);
   renderer.view.addEventListener("touchend",touchend,false);
   renderer.view.addEventListener("touchcancel",touchend,false);
+
+  window.fartCount = 0;
+  SimpleEvents.listen('penguin.fart',function(){console.log('fart! ',window.fartCount++);});
+  SimpleEvents.listen('penguin.fart.end',function(){console.log('/end fart');});
 }
 
 function animate() {
