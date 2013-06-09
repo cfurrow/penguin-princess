@@ -16,6 +16,10 @@ function Fish(x,y){
   // custom
   this.movement         = { left: false, right: false, falling: false, jumping: false };
   this.defaultY         = this.position.y;
+  this.fallingPerTick   = 10;
+  this.jumpingPerTick   = 10;
+  this.rotationAngle    = 70;
+
 
   this.movementPerFrame = getRandomInt(1,3)
 
@@ -32,6 +36,7 @@ function Fish(x,y){
   SimpleEvents.listen('penguin.fart',this.handlePenguinFart,this);
 
 }
+Fish.MIN_Y            = 100;
 
 Fish.constructor = Fish;
 Fish.prototype   = Object.create(PIXI.MovieClip.prototype);
@@ -75,20 +80,20 @@ Fish.prototype.tick = function(){
   }
 
   if(this.movement.jumping){
-    if(this.position.y <= 100){
+    if(this.position.y <= Fish.MIN_Y){
       this.movement.jumping = false;
       this.movement.falling = true;
       return;
     }
     else{
-      this.position.y -= 10;  
+      this.position.y -= this.jumpingPerTick;  
     }
 
     if(this.movement.right){
-      this.rotation = 160;
+      this.rotation = -Math.abs(this.rotationAngle);
     }
     else{
-      this.rotation = 70;
+      this.rotation = Math.abs(this.rotationAngle);
     }
     
   }
@@ -101,14 +106,14 @@ Fish.prototype.tick = function(){
       return;
     }
     else{
-      this.position.y += 10;  
+      this.position.y += this.fallingPerTick;  
     }
 
     if(this.movement.right){
-      this.rotation = 180;
+      this.rotation = Math.abs(this.rotationAngle);
     }
     else{
-      this.rotation = 270; 
+      this.rotation = -Math.abs(this.rotationAngle);
     }
     
   }
@@ -117,7 +122,7 @@ Fish.prototype.tick = function(){
 Fish.prototype.handlePenguinFart = function(){
   var weight = Math.random() * 100;
   if(weight <= 20){
-    if(this.position.y >= 100 && !this.movement.falling){
+    if(this.position.y >= Fish.MIN_Y && !this.movement.falling){
       this.movement.falling = false;
       this.movement.jumping = true;  
     }
