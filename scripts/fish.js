@@ -36,7 +36,7 @@ function Fish(x,y){
   SimpleEvents.listen('penguin.fart',this.handlePenguinFart,this);
 
 }
-Fish.MIN_Y            = 100;
+Fish.MIN_Y            = 50;
 
 Fish.constructor = Fish;
 Fish.prototype   = Object.create(PIXI.MovieClip.prototype);
@@ -80,7 +80,7 @@ Fish.prototype.tick = function(){
   }
 
   if(this.movement.jumping){
-    if(this.position.y <= Fish.MIN_Y){
+    if(this.position.y <= getRandomInt(Fish.MIN_Y, Fish.MIN_Y+50) ){
       this.movement.jumping = false;
       this.movement.falling = true;
       return;
