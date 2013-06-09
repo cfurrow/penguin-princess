@@ -135,11 +135,15 @@ Penguin.prototype.tick = function(){
     this.getSurprised();
   }
   if(this.movement.left){
-    this.position.x -= this.movePerFrame;
+    if(this.position.x >= 0){
+      this.position.x -= this.movePerFrame;
+    }
     this.scale.x     = -0.35;
   }
   if(this.movement.right){
-    this.position.x += this.movePerFrame;
+    if(this.position.x <= window.CANVASWIDTH){
+      this.position.x += this.movePerFrame;
+    }
     this.scale.x     = 0.35;
   }
   if(this.movement.left || this.movement.right){
