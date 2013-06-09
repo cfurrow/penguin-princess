@@ -1,5 +1,5 @@
 window.CANVASWIDTH  = 800;
-window.CANVASHEIGHT = 330;
+window.CANVASHEIGHT = 430;
 var stage           = null,
     penguinTextures = [],
     renderer        = null,

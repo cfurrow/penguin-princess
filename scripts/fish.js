@@ -6,7 +6,7 @@ function Fish(x,y){
 
   // pixi.js
   this.position.x = x || 350;
-  this.position.y = y || 300;
+  this.position.y = y || 370;
   this.anchor.x   = 0.5;
   this.anchor.y   = 0.5;
   this.animationSpeed  = 0.07;
