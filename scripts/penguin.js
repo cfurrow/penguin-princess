@@ -1,4 +1,5 @@
 function Penguin(textures) {
+  var self = this;
   this.penguinTextures         = this.loadFrames();
   this.penguinSurpriseTextures = this.loadSurpriseFrames();
   var penguinStage             = new PIXI.Stage("",true);
@@ -32,7 +33,7 @@ function Penguin(textures) {
 
   this.loadFart();
   var konami      = new Konami();
-  konami.code     = this.setSurprised;
+  konami.code     = function(){ self.setSurprised() };
   konami.load();
 }
 
