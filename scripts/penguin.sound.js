@@ -16,7 +16,7 @@
   Penguin.prototype.playFart = function(){
     if(!this.fartAudio.isFarting){
       this.fartAudio.isFarting = true;
-      SimpleEvents.trigger('penguin.fart');
+      SimpleEvents.trigger('penguin.fart',this);
       this.fartAudio.play();
     }
   }

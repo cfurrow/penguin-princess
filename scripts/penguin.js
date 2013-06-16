@@ -239,3 +239,15 @@ Penguin.prototype.setSurprised = function()
 {
   this.movement.surprise = true;
 }
+
+Penguin.prototype.getMinX = function(){
+  return this.position.x - (this.width * this.anchor.x);
+};
+
+Penguin.prototype.getMaxX = function(){
+  return this.getMinX() + this.width;
+};
+
+Penguin.prototype.betweenMinXMaxX = function(obj){
+  return (obj.position.x >= this.getMinX() && obj.position.x <= this.getMaxX());
+}

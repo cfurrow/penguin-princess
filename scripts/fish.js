@@ -20,8 +20,7 @@ function Fish(x,y){
   this.jumpingPerTick   = 10;
   this.rotationAngle    = 70;
 
-
-  this.movementPerFrame = getRandomInt(1,3)
+  this.movementPerFrame = getRandomInt(1,4)
 
   if(100*Math.random() < 50){
     this.movement.left = true;
@@ -119,16 +118,19 @@ Fish.prototype.tick = function(){
   }
 };
 
-Fish.prototype.handlePenguinFart = function(){
+Fish.prototype.handlePenguinFart = function(penguin){
   var weight = Math.random() * 100;
-  if(weight <= 20){
-    if(this.position.y >= Fish.MIN_Y && !this.movement.falling){
-      this.movement.falling = false;
-      this.movement.jumping = true;  
-    }
-    else{
-      this.movement.falling = true;
-      this.movement.jumping = false;
+  if(penguin.betweenMinXMaxX(this)){
+    if(weight <= 60){
+      if(this.position.y >= Fish.MIN_Y && !this.movement.falling){
+        this.movement.falling = false;
+        this.movement.jumping = true;  
+      }
+      else{
+        this.movement.falling = true;
+        this.movement.jumping = false;
+      }
     }
   }
+  
 }

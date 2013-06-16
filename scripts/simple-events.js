@@ -17,16 +17,24 @@ SimpleEvents.trigger = function(name){
         len = SimpleEvents._events[name].length;
 
     for(;i<len;i++){
-      var func = function(index){
+      var func = function(index, args){
         return function(){
           var currentCallback = SimpleEvents._events[name][index]
           var context         = currentCallback.context || this;
-          currentCallback.call(context,arguments);
+          currentCallback.apply(context,args);
         }
       };
 
-      setTimeout(func(i),10);
+      setTimeout(func(i,Array.prototype.slice.call(arguments,1)),10);
       
     }
   }
-}
+};
+
+SimpleEvents.count = function(name){
+  return SimpleEvents._events[name].length;
+};
+
+SimpleEvents.get   = function(name){
+  return SimpleEvents._events[name];
+};

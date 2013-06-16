@@ -35,7 +35,6 @@ function init()
     stage.addChild(penguin.stage);
    
     setupInteraction();
-    addListeners();
   },this);
   loadAssets();
 
@@ -62,9 +61,12 @@ function setupInteraction(){
   window.onkeydown = function(e){
     penguin.onKeyDown(e);
     if(e.metaKey==true){
+      // don't capture meta-keys (command, etc)
       return true;
     }
+    e.preventDefault();
     if(e.keyCode == 70){
+      // f
       showMeter = showMeter ? false : true;
       if(showMeter && (typeof(meter) === 'undefined' || meter === null)) {
         meter =  new FPSMeter(document.getElementById("fps"));
@@ -74,7 +76,6 @@ function setupInteraction(){
         document.getElementById('fps').innerHTML = '';
       }
     }
-    return false;
   };
 
   window.onkeyup = function(e){
@@ -97,15 +98,6 @@ function setupInteraction(){
   renderer.view.addEventListener("touchstart",touchstart,false);
   renderer.view.addEventListener("touchend",touchend,false);
   renderer.view.addEventListener("touchcancel",touchend,false);
-}
-
-
-function addListeners(){
-
-
-  window.fartCount = 0;
-  SimpleEvents.listen('penguin.fart',function(){console.log('fart! ',window.fartCount++);});
-  SimpleEvents.listen('penguin.fart.end',function(){console.log('/end fart');});
 }
 
 function animate() {

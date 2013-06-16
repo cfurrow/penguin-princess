@@ -1,9 +1,3 @@
-SimpleEvents.listen("assets.loaded",function(){
-  console.log("assets loaded");
-});
-SimpleEvents.listen("assets.progress",function(){
-  console.log("assets.progress: ", arguments);
-});
 
 function loadAssets(){
   var assets = [],
@@ -39,7 +33,6 @@ function loadAssets(){
   loader.addEventListener('onComplete',function(){
     setTimeout(function(){SimpleEvents.trigger('assets.loaded');},500);
   });
-  loader.addEventListener('onProgress',function(){SimpleEvents.trigger('assets.progress');});
 
   loader.load();
 }
