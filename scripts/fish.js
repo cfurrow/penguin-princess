@@ -60,6 +60,21 @@ Fish.prototype.loadFrames = function()
 };
 
 Fish.prototype.tick = function(){
+  this.tick.count = this.tick.count || 0;
+  this.tick.lastChangeTick = this.tick.lastChangeTick || 0;
+  var shouldSwitchDirection = (getRandomInt(0,100) <= 1) && (this.tick.count - this.tick.lastChangeTick > getRandomInt(200,500));
+  if(shouldSwitchDirection){
+    this.tick.lastChangeTick = this.tick.count;
+    if(this.movement.right){
+      this.movement.right = false;
+      this.movement.left = true;
+    }
+    else{
+      this.movement.right = true;
+      this.movement.left = false; 
+    }
+  }
+
   if(this.movement.right){
     this.position.x += this.movementPerFrame;
     this.scale.x     = -Math.abs(this.scale.x)
@@ -114,8 +129,8 @@ Fish.prototype.tick = function(){
     else{
       this.rotation = -Math.abs(this.rotationAngle);
     }
-    
   }
+  this.tick.count++;
 };
 
 Fish.prototype.handlePenguinFart = function(penguin){
