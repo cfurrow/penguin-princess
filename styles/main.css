@@ -22,11 +22,13 @@ tr:nth-child(odd)
 .container{
   width:800px;
   margin: 0 auto;
+  position:relative;
 }
 #scene{
   margin-bottom: 20px;
 }
 #fps{
-  position:relative;
-  right:-670px;
+  position:absolute;
+  right: 112px;
+  top: 0;
 }

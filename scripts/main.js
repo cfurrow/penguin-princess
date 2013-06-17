@@ -137,10 +137,13 @@ function addGroundSnow()
 
 function addFish()
 {
-  fishes.push( new Fish(0) );
-  fishes.push( new Fish(200) );
-  fishes.push( new Fish(600) );
-  fishes.push( new Fish(700) );
+  fishes.push( new Fish(getRandomInt(0,window.CANVASWIDTH)) );
+  fishes.push( new Fish(getRandomInt(0,window.CANVASWIDTH)) );
+  fishes.push( new Fish(getRandomInt(0,window.CANVASWIDTH)) );
+  fishes.push( new Fish(getRandomInt(0,window.CANVASWIDTH)) );
+  fishes.push( new Fish(getRandomInt(0,window.CANVASWIDTH)) );
+  fishes.push( new Fish(getRandomInt(0,window.CANVASWIDTH)) );
+  fishes.push( new Fish(getRandomInt(0,window.CANVASWIDTH)) );
 
   for(var i=0; i< fishes.length; i++){
     stage.addChild(fishes[i].stage);
