@@ -36,9 +36,11 @@ function init()
    
     setupInteraction();
   },this);
-  loadAssets();
 
+  loadAssets();
+  
 }
+
 function setupInteraction(){
   var touchstart = function(e){
     e.preventDefault();

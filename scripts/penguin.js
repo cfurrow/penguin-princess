@@ -35,6 +35,8 @@ function Penguin(textures) {
   var konami      = new Konami();
   konami.code     = function(){ self.setSurprised() };
   konami.load();
+
+  handleOrientation(function(){return self.detectLeftRightLeft;}(),self);
 }
 
 Penguin.constructor = Penguin;
@@ -250,4 +252,24 @@ Penguin.prototype.getMaxX = function(){
 
 Penguin.prototype.betweenMinXMaxX = function(obj){
   return (obj.position.x >= this.getMinX() && obj.position.x <= this.getMaxX());
+}
+
+Penguin.prototype.detectLeftRightLeft = function(tiltLR,tiltFB,dir,motUD){
+  this.detectLeftRightLeft.leftCount  = this.detectLeftRightLeft.leftCount || 0;
+  this.detectLeftRightLeft.rightCount = this.detectLeftRightLeft.rightCount || 0;
+  console.log(tiltLR);
+
+  if(tiltLR >= 90){
+    this.detectLeftRightLeft.rightCount++;
+  }
+  else if(tiltLR <= -90){
+    this.detectLeftRightLeft.leftCount++;
+  }
+
+  if(this.detectLeftRightLeft.leftCount >= 2 && this.detectLeftRightLeft.rightCount >= 1){
+    this.detectLeftRightLeft.leftCount = this.detectLeftRightLeft.rightCount = 0;
+    this.setSurprised();
+  }
+
+  console.log(arguments);
 }
