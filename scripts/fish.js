@@ -9,11 +9,13 @@ function Fish(x,y){
   this.position.y = y || 370;
   this.anchor.x   = 0.5;
   this.anchor.y   = 0.5;
-  this.animationSpeed  = 0.07;
+  this._ANIMATION_SPEED = 0.07;
+  this.animationSpeed  = this._ANIMATION_SPEED;
   this.scale.x    =  0.6;
   this.scale.y    =  0.6;
 
   // custom
+  this.fpsAdjustment    = 1;
   this.movement         = { left: false, right: false, falling: false, jumping: false };
   this.defaultY         = this.position.y;
   this.fallingPerTick   = 10;
@@ -21,6 +23,7 @@ function Fish(x,y){
   this.rotationAngle    = 70;
 
   this._resetMovementPerFrame();
+  this.movementPerFrame = this._MOVEMENT_PER_FRAME;
 
   if(100*Math.random() < 50){
     this.movement.left = true;
@@ -60,15 +63,14 @@ Fish.prototype.loadFrames = function()
 };
 
 Fish.prototype.tick = function(fps){
+  this.fpsAdjustment              = 60/fps;
   this.tick.count                 = this.tick.count || 0;
   this.tick.lastChangeTick        = this.tick.lastChangeTick || 0;
-  this.tick.shouldSwitchDirection = (getRandomInt(0,100) <= 1) && (this.tick.count - this.tick.lastChangeTick > getRandomInt(200,500));
+  this.tick.shouldSwitchDirection = !(this.movement.falling || this.movement.jumping) && (getRandomInt(0,100) <= 1) && (this.tick.count - this.tick.lastChangeTick > getRandomInt(200,500));
 
-  var movementCalculated = this.movementPerFrame;
-
-  // don't do on ever tick
   if(this.tick.count % 1000 == 0){
-    movementCalculated = this.movementPerFrame * (60/fps);
+    this.animationSpeed   = this._ANIMATION_SPEED * this.fpsAdjustment;
+    this.movementPerFrame = this._MOVEMENT_PER_FRAME * this.fpsAdjustment;
   }
   
   if(this.tick.shouldSwitchDirection){
@@ -85,11 +87,11 @@ Fish.prototype.tick = function(fps){
   }
 
   if(this.movement.right){
-    this.position.x += movementCalculated;
+    this.position.x += this.movementPerFrame;
     this.scale.x     = -Math.abs(this.scale.x)
   }
   if(this.movement.left){
-    this.position.x -= movementCalculated;
+    this.position.x -= this.movementPerFrame;
     this.scale.x     = Math.abs(this.scale.x);
   }
 
@@ -109,7 +111,7 @@ Fish.prototype.tick = function(fps){
       return;
     }
     else{
-      this.position.y -= this.jumpingPerTick;  
+      this.position.y -= (this.jumpingPerTick * this.fpsAdjustment);  
     }
 
     if(this.movement.right){
@@ -124,12 +126,12 @@ Fish.prototype.tick = function(fps){
     if(this.position.y >= this.defaultY){
       this.movement.jumping = false;
       this.movement.falling = false;
-      this.rotation = 0;
+      this.rotation   = 0;
       this.position.y = this.defaultY;
       return;
     }
     else{
-      this.position.y += this.fallingPerTick;  
+      this.position.y += (this.fallingPerTick * this.fpsAdjustment);  
     }
 
     if(this.movement.right){
@@ -160,5 +162,5 @@ Fish.prototype.handlePenguinFart = function(penguin){
 }
 
 Fish.prototype._resetMovementPerFrame = function(){
-  this.movementPerFrame = getRandomInt(1,4);
+  this._MOVEMENT_PER_FRAME = getRandomInt(1,4);
 }
