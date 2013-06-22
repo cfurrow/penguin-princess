@@ -62,8 +62,8 @@ Fish.prototype.loadFrames = function()
 Fish.prototype.tick = function(){
   this.tick.count = this.tick.count || 0;
   this.tick.lastChangeTick = this.tick.lastChangeTick || 0;
-  var shouldSwitchDirection = (getRandomInt(0,100) <= 1) && (this.tick.count - this.tick.lastChangeTick > getRandomInt(200,500));
-  if(shouldSwitchDirection){
+  this.tick.shouldSwitchDirection = (getRandomInt(0,100) <= 1) && (this.tick.count - this.tick.lastChangeTick > getRandomInt(200,500));
+  if(this.tick.shouldSwitchDirection){
     this.tick.lastChangeTick = this.tick.count;
     if(this.movement.right){
       this.movement.right = false;
@@ -136,7 +136,7 @@ Fish.prototype.tick = function(){
 Fish.prototype.handlePenguinFart = function(penguin){
   var weight = Math.random() * 100;
   if(penguin.betweenMinXMaxX(this)){
-    if(weight <= 60){
+    if(weight <= 40){
       if(this.position.y >= Fish.MIN_Y && !this.movement.falling){
         this.movement.falling = false;
         this.movement.jumping = true;  
