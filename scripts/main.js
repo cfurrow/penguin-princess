@@ -15,6 +15,9 @@ function init()
   stage           = new PIXI.Stage(0x5bb5ff,true);
 	renderer        = PIXI.autoDetectRenderer(window.CANVASWIDTH,window.CANVASHEIGHT);
 	document.getElementById("scene").appendChild(renderer.view);
+  meter =  new FPSMeter(document.getElementById("fps"));
+
+  if(!showMeter){meter.hide();}
   
   showLoadingText();
 
@@ -77,13 +80,9 @@ function setupInteraction(){
     if(e.keyCode == 70){
       // f
       showMeter = showMeter ? false : true;
-      if(showMeter && (typeof(meter) === 'undefined' || meter === null)) {
-        meter =  new FPSMeter(document.getElementById("fps"));
-      }
-      if(!showMeter){
-        meter = null;
-        document.getElementById('fps').innerHTML = '';
-      }
+      
+      if(!showMeter){meter.hide();}
+      else{meter.show();}
     }
   };
 
@@ -110,17 +109,17 @@ function setupInteraction(){
 }
 
 function animate() {
-  if(meter){ meter.tickStart(); }
+  meter.tickStart();
 
   requestAnimFrame( animate );
   renderer.render(stage);
   
-  penguin.tick();
+  penguin.tick(meter.fps);
   for(var i=0; i<fishes.length; i++){
-    fishes[i].tick();
+    fishes[i].tick(meter.fps);
   }
 
-  if(meter){ meter.tick(); }
+  meter.tick();
 }
 
 function addGroundSnow()

@@ -7,7 +7,8 @@ function Penguin(textures) {
   PIXI.MovieClip.call(this,this.penguinTextures);
 
   // pixi.js
-  this.animationSpeed  = 0.05;
+  this._ANIMATION_SPEED = 0.05;
+  this.animationSpeed = this._ANIMATION_SPEED; 
   this.position.x =  150;
   this.position.y =  300;
   this.scale.x    =  0.35;
@@ -16,12 +17,15 @@ function Penguin(textures) {
   this.anchor.y   = 1;
 
   // custom
-  this.movePerFrame   = 3;
-  this.rotatePerFrame = 0.015;
-  this.rotateMax      = 0.05;
-  this.movement   = { up:false, down:false, left:false, right:false, waddleRight:false, surprise:false, stop:false };
+  this.fpsAdjustment        = 1;
+  this._MOVEMENT_PER_FRAME  = 3;
+  this.movePerFrame         = this._MOVEMENT_PER_FRAME;
+  this._ROTATE_PER_FRAME    = 0.015;
+  this.rotatePerFrame       = this._ROTATE_PER_FRAME;
+  this.rotateMax            = 0.05;
+  this.movement             = { up:false, down:false, left:false, right:false, waddleRight:false, surprise:false, stop:false };
   this.surpriseFramesLoaded = false;
-  this.farting    = false;
+  this.farting              = false;
 
   this.setInteractive(true);
 
@@ -101,10 +105,11 @@ Penguin.prototype.reset = function(){
   this.switchToNormalFrames();
   this.surpriseFramesLoaded=false;
 }
+
 Penguin.prototype.getSurprised = function(){
     SimpleEvents.trigger('penguin.surprised');
     var center = 400;
-    var movePerFrame = this.movePerFrame + 2;
+    var movePerFrame = this.movePerFrame + (2*this.fpsAdjustment);
     if(this.position.x < (center - movePerFrame) && !this.movement.stop){
       this.movement.right = true;
       this.movement.left  = false;
@@ -124,8 +129,8 @@ Penguin.prototype.getSurprised = function(){
         this.rotation = 0;
       }
       else{
-        this.scale.x = this.scale.y = Math.abs(this.scale.x += 0.05);
-        this.position.y += 15;
+        this.scale.x = this.scale.y = Math.abs(this.scale.x += (0.05*this.fpsAdjustment));
+        this.position.y += 15*this.fpsAdjustment;
         if(this.scale.x >= 10){
           this.reset();
         }
@@ -133,7 +138,12 @@ Penguin.prototype.getSurprised = function(){
     }
 };
 
-Penguin.prototype.tick = function(){
+Penguin.prototype.tick = function(fps){
+  this.fpsAdjustment  = 60/fps;
+  this.animationSpeed = this._ANIMATION_SPEED * this.fpsAdjustment;
+  this.movePerFrame   = this._MOVEMENT_PER_FRAME * this.fpsAdjustment;
+  this.rotatePerFrame = this._ROTATE_PER_FRAME * this.fpsAdjustment;
+
   if(this.movement.surprise){
     this.getSurprised();
   }

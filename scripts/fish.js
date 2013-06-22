@@ -59,10 +59,17 @@ Fish.prototype.loadFrames = function()
   return fishTextures;
 };
 
-Fish.prototype.tick = function(){
-  this.tick.count = this.tick.count || 0;
-  this.tick.lastChangeTick = this.tick.lastChangeTick || 0;
+Fish.prototype.tick = function(fps){
+  this.tick.count                 = this.tick.count || 0;
+  this.tick.lastChangeTick        = this.tick.lastChangeTick || 0;
   this.tick.shouldSwitchDirection = (getRandomInt(0,100) <= 1) && (this.tick.count - this.tick.lastChangeTick > getRandomInt(200,500));
+
+  var movementCalculated = this.movementPerFrame;
+
+  // don't do on ever tick
+  if(this.tick.count % 1000 == 0){
+    movementCalculated = this.movementPerFrame * (60/fps);
+  }
   
   if(this.tick.shouldSwitchDirection){
     this.tick.lastChangeTick = this.tick.count;
@@ -78,11 +85,11 @@ Fish.prototype.tick = function(){
   }
 
   if(this.movement.right){
-    this.position.x += this.movementPerFrame;
+    this.position.x += movementCalculated;
     this.scale.x     = -Math.abs(this.scale.x)
   }
   if(this.movement.left){
-    this.position.x -= this.movementPerFrame;
+    this.position.x -= movementCalculated;
     this.scale.x     = Math.abs(this.scale.x);
   }
 
