@@ -20,7 +20,7 @@ function Fish(x,y){
   this.jumpingPerTick   = 10;
   this.rotationAngle    = 70;
 
-  this.movementPerFrame = getRandomInt(1,4)
+  this._resetMovementPerFrame();
 
   if(100*Math.random() < 50){
     this.movement.left = true;
@@ -63,8 +63,10 @@ Fish.prototype.tick = function(){
   this.tick.count = this.tick.count || 0;
   this.tick.lastChangeTick = this.tick.lastChangeTick || 0;
   this.tick.shouldSwitchDirection = (getRandomInt(0,100) <= 1) && (this.tick.count - this.tick.lastChangeTick > getRandomInt(200,500));
+  
   if(this.tick.shouldSwitchDirection){
     this.tick.lastChangeTick = this.tick.count;
+    this._resetMovementPerFrame();
     if(this.movement.right){
       this.movement.right = false;
       this.movement.left = true;
@@ -148,4 +150,8 @@ Fish.prototype.handlePenguinFart = function(penguin){
     }
   }
   
+}
+
+Fish.prototype._resetMovementPerFrame = function(){
+  this.movementPerFrame = getRandomInt(1,4);
 }

@@ -1,7 +1,6 @@
 window.CANVASWIDTH  = 800;
 window.CANVASHEIGHT = 430;
 var stage           = null,
-    penguinTextures = [],
     renderer        = null,
     penguin         = {tick:function(){}},
     snowStage       = null,
@@ -16,17 +15,12 @@ function init()
   stage           = new PIXI.Stage(0x5bb5ff,true);
 	renderer        = PIXI.autoDetectRenderer(window.CANVASWIDTH,window.CANVASHEIGHT);
 	document.getElementById("scene").appendChild(renderer.view);
-  // show loading graphic?
-  var text = new PIXI.Text('Loading...');
-  text.setStyle({fill:"#ffffff"});
-  text.position.x = (window.CANVASWIDTH / 2 ) - text.width / 2;
-  text.position.y = (window.CANVASHEIGHT / 2);
-  stage.addChild(text);
+  
+  showLoadingText();
+
   requestAnimFrame( animate );
 
   SimpleEvents.listen("assets.loaded",function(){
-    stage.removeChild(text);
-
     addGroundSnow();
     addWater();
     addFish();
@@ -39,6 +33,19 @@ function init()
 
   loadAssets();
   
+}
+
+function showLoadingText(){
+  var text = new PIXI.Text('Loading...');
+  text.setStyle({fill:"#ffffff"});
+  text.position.x = (window.CANVASWIDTH / 2 ) - text.width / 2;
+  text.position.y = (window.CANVASHEIGHT / 2);
+  stage.addChild(text);
+  requestAnimFrame( animate );
+
+  SimpleEvents.listen("assets.loaded",function(){
+    stage.removeChild(text);
+  },this);
 }
 
 function setupInteraction(){
