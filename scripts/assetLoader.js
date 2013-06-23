@@ -27,6 +27,11 @@ function loadAssets(){
   {
     assets.push("images/surprise_frame_" + index + "_512x512.png");
   }
+  length = 11
+  for(index=0; index<length; index++)
+  {
+    assets.push("images/foof_frame_" + index + "_128x128.png");
+  }
 
   loader = new PIXI.AssetLoader(assets);
 

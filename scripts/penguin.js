@@ -9,10 +9,10 @@ function Penguin(textures) {
   // pixi.js
   this._ANIMATION_SPEED = 0.05;
   this.animationSpeed = this._ANIMATION_SPEED; 
-  this.position.x =  150;
-  this.position.y =  300;
-  this.scale.x    =  0.35;
-  this.scale.y    =  0.35;
+  this.position.x = 150;
+  this.position.y = 300;
+  this._SCALE     = 0.35
+  this.scale.x    = this.scale.y = this._SCALE
   this.anchor.x   = 0.5;
   this.anchor.y   = 1;
 
@@ -41,6 +41,11 @@ function Penguin(textures) {
   konami.load();
 
   handleOrientation(function(){return self.detectLeftRightLeft;}(),self);
+
+  SimpleEvents.listen('penguin.fart.end',function(){
+    this.stage.removeChild(this.foof);
+    this.foof = null;
+  },this);
 }
 
 Penguin.constructor = Penguin;
@@ -57,7 +62,7 @@ Penguin.prototype.loadFrames = function()
     texture = PIXI.Texture.fromImage("images/frame_" + i + "_512x512.png");
     penguinTextures.push(texture);
   }
-  for(i=3;i>=0;i--){
+  for(i=len-1;i>=0;i--){
     texture = PIXI.Texture.fromImage("images/frame_" + i + "_512x512.png");
     penguinTextures.push(texture);
   }
@@ -82,7 +87,7 @@ Penguin.prototype.loadSurpriseFrames = function()
 
 Penguin.prototype.handleTouch = function(touchdata){
   SimpleEvents.trigger('penguin.touched');
-  this.playFart();
+  this.fart();
 };
 
 Penguin.prototype.switchToSurpriseFrames = function(){
@@ -99,7 +104,7 @@ Penguin.prototype.switchToNormalFrames  = function(){
 
 Penguin.prototype.reset = function(){
   this.position.y = 300;
-  this.scale.x = penguin.scale.y = 0.35;
+  this.scale.x = penguin.scale.y = this._SCALE;
   this.movement.surprise = false;
   this.movement.stop = false;
   this.switchToNormalFrames();
@@ -139,10 +144,26 @@ Penguin.prototype.getSurprised = function(){
 };
 
 Penguin.prototype.tick = function(fps){
+  var direction = this.getDirection();
   this.fpsAdjustment  = 60/fps;
   this.animationSpeed = this._ANIMATION_SPEED * this.fpsAdjustment;
   this.movePerFrame   = this._MOVEMENT_PER_FRAME * this.fpsAdjustment;
   this.rotatePerFrame = this._ROTATE_PER_FRAME * this.fpsAdjustment;
+
+  if(this.foof){
+    this.foof.tick(this.getMinX()+(50*direction), this.position.y-40);
+  }
+  if(this.foof){
+    if(direction>0){
+      //this.foof.anchor.x = 0;
+      this.foof.scale.x  = this.foof._SCALE;
+    }
+    else{
+      //this.foof.anchor.x = 1.0;
+      this.foof.scale.x  = -this.foof._SCALE; 
+    }
+  }
+  
 
   if(this.movement.surprise){
     this.getSurprised();
@@ -151,13 +172,15 @@ Penguin.prototype.tick = function(fps){
     if(this.position.x >= 0){
       this.position.x -= this.movePerFrame;
     }
-    this.scale.x     = -0.35;
+    this.scale.x     = -this._SCALE;
+    
   }
   if(this.movement.right){
     if(this.position.x <= window.CANVASWIDTH){
       this.position.x += this.movePerFrame;
     }
-    this.scale.x     = 0.35;
+    this.scale.x     = this._SCALE;
+    
   }
   if(this.movement.left || this.movement.right){
     if(this.movement.waddleRight ){
@@ -180,6 +203,12 @@ Penguin.prototype.tick = function(fps){
 
 Penguin.prototype.fart = function(){
   this.playFart();
+  if(!this.foof){
+    var direction = this.getDirection();
+    // todo: abstract this
+    this.foof = new Foof(this.getMinX()+(50*direction), this.position.y-40);
+    self.stage.addChild(this.foof);
+  } 
 };
 
 Penguin.prototype.onKeyUp = function(e){
@@ -258,6 +287,9 @@ Penguin.prototype.getMinX = function(){
 
 Penguin.prototype.getMaxX = function(){
   return this.getMinX() + this.width;
+};
+Penguin.prototype.getDirection = function(){
+  return this.scale.x > 0 ? 1 : -1;
 };
 
 Penguin.prototype.betweenMinXMaxX = function(obj){
