@@ -11,6 +11,23 @@
     
     <h1>Penguin Princess, GO!</h1>
     <div id="scene"></div>
+    <div id="debug" style="display:none;">
+      <div id="currentPattern"></div>
+      <table>
+        <tr>
+          <th>tiltLR</th>
+          <th>tiltFB</th>
+          <th>dir</th>
+          <th>motUD</th>
+        </tr>
+        <tr>
+          <td id="tiltLR"></td>
+          <td id="tiltFB"></td>
+          <td id="dir"></td>
+          <td id="motUD"></td>
+        </tr>
+      </table>
+    </div>
     <div>
       <table>
         <tr>
@@ -48,6 +65,7 @@
     })();
 
   </script>
+  <script type="text/javascript" src="scripts/jquery.min.js"></script>
   <script type="text/javascript" src="scripts/utils.js"></script>
   <script type="text/javascript" src="scripts/orientationEventDetection.js"></script>
   <script type="text/javascript" charset="utf-8" src="scripts/simple-events.js"></script>

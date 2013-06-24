@@ -35,6 +35,10 @@ function init()
   },this);
 
   loadAssets();
+
+  if(/debug/.test(location.search)){
+    $("#debug").show();
+  }
   
 }
 

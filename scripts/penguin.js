@@ -40,7 +40,9 @@ function Penguin(textures) {
   konami.code     = function(){ self.setSurprised() };
   konami.load();
 
-  handleOrientation(function(){return self.detectLeftRightLeft;}(),self);
+  handleOrientation(function(){
+    return self.detectLeftRightLeft;
+  }(), self);
 
   SimpleEvents.listen('penguin.fart.end',function(){
     this.stage.removeChild(this.foof);
@@ -299,19 +301,23 @@ Penguin.prototype.betweenMinXMaxX = function(obj){
 Penguin.prototype.detectLeftRightLeft = function(tiltLR,tiltFB,dir,motUD){
   this.detectLeftRightLeft.leftCount  = this.detectLeftRightLeft.leftCount || 0;
   this.detectLeftRightLeft.rightCount = this.detectLeftRightLeft.rightCount || 0;
-  console.log(tiltLR);
+  this.detectLeftRightLeft.currentPattern = this.detectLeftRightLeft.currentPattern || "";
 
-  if(tiltLR >= 90){
-    this.detectLeftRightLeft.rightCount++;
+  $("#tiltLR").html(tiltLR);
+  $("#tiltFB").html(tiltFB);
+  $("#dir").html(dir);
+  $("#motUD").html(motUD);
+  $("#currentPattern").html(this.detectLeftRightLeft.currentPattern)
+
+  if(tiltLR >= 65){
+    this.detectLeftRightLeft.currentPattern += "R";
   }
-  else if(tiltLR <= -90){
-    this.detectLeftRightLeft.leftCount++;
+  else if(tiltLR <= -65){
+    this.detectLeftRightLeft.currentPattern += "L";
   }
 
-  if(this.detectLeftRightLeft.leftCount >= 2 && this.detectLeftRightLeft.rightCount >= 1){
-    this.detectLeftRightLeft.leftCount = this.detectLeftRightLeft.rightCount = 0;
+  if(/L+R+L+/.test(this.detectLeftRightLeft.currentPattern)){
+    this.detectLeftRightLeft.currentPattern = "";
     this.setSurprised();
   }
-
-  console.log(arguments);
 }
