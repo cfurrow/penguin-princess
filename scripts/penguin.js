@@ -298,10 +298,15 @@ Penguin.prototype.betweenMinXMaxX = function(obj){
   return (obj.position.x >= this.getMinX() && obj.position.x <= this.getMaxX());
 }
 
-Penguin.prototype.detectLeftRightLeft = function(tiltLR,tiltFB,dir,motUD){
+Penguin.prototype.detectLeftRightLeft = function(tiltLR, tiltFB, dir, motUD){
   this.detectLeftRightLeft.leftCount  = this.detectLeftRightLeft.leftCount || 0;
   this.detectLeftRightLeft.rightCount = this.detectLeftRightLeft.rightCount || 0;
   this.detectLeftRightLeft.currentPattern = this.detectLeftRightLeft.currentPattern || "";
+
+  var landscapeMode, portraitMode;
+
+  landscapeMode = tiltLR < -80 || tiltLR > 80;
+  portraitMode  = !landscapeMode;
 
   $("#tiltLR").html(tiltLR);
   $("#tiltFB").html(tiltFB);
@@ -309,13 +314,23 @@ Penguin.prototype.detectLeftRightLeft = function(tiltLR,tiltFB,dir,motUD){
   $("#motUD").html(motUD);
   $("#currentPattern").html(this.detectLeftRightLeft.currentPattern)
 
-  if(tiltLR >= 65){
-    this.detectLeftRightLeft.currentPattern += "R";
+  if(portraitMode){
+    if(tiltLR >= 65){
+      this.detectLeftRightLeft.currentPattern += "R";
+    }
+    else if(tiltLR <= -65){
+      this.detectLeftRightLeft.currentPattern += "L";
+    }
+  } 
+  else{
+    if(tiltFB >= 25){
+      this.detectLeftRightLeft.currentPattern += "R";
+    }
+    else if(tiltFB <= -25){
+      this.detectLeftRightLeft.currentPattern += "L";
+    }
   }
-  else if(tiltLR <= -65){
-    this.detectLeftRightLeft.currentPattern += "L";
-  }
-
+ 
   if(/L+R+L+/.test(this.detectLeftRightLeft.currentPattern)){
     this.detectLeftRightLeft.currentPattern = "";
     this.setSurprised();
