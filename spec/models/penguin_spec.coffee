@@ -5,4 +5,4 @@ describe 'Penguin', ->
     penguin = new Penguin()
 
   it 'has texture packs', ->
-    expect(penguin.texturePacks.count).toBe(2)
+    expect(penguin.texturePacks.length).toBe(2)

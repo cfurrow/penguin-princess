@@ -36,7 +36,7 @@ module.exports = (grunt) ->
       #   files: 
       #     'scripts/all.js': ['scripts/coffee/**/*.coffee'] # concat then compile into single file
     meta:
-      src:   ['scripts/**/*.js','!scripts/**/main.js']
+      src:   ['scripts/compiled/**/*.js','!scripts/**/main.js']
       specs: 'spec/**/*.js'
 
     watch:
