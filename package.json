@@ -1,0 +1,11 @@
+{
+  "name": "penguin-princess",
+  "version": "0.1.0",
+  "devDependencies": {
+    "grunt": "~0.4.1",
+    "coffee-script": "~1.6.3",
+    "grunt-contrib-coffee": "~0.7.0",
+    "grunt-contrib-jasmine": "~0.5.2",
+    "grunt-contrib-watch": "~0.5.3"
+  }
+}
