@@ -5,17 +5,39 @@ module.exports = (grunt) ->
     pkg: grunt.file.readJSON('package.json')
 
     coffee:
-      compileWithMaps: 
-        options: 
-          join: true
+      compile:
+        options:
           sourceMap: true
+        files: [
+          {
+            expand: true,
+            flatten: true,
+            cwd: 'scripts',
+            src: ['**/*.coffee'],
+            dest: 'scripts/compiled/',
+            ext: '.js'
+          }
+          {
+            expand: true,
+            flatten: true,
+            cwd: 'spec',
+            src: ['**/*.coffee'],
+            dest: 'spec/compiled/',
+            ext: '.js'
+          }
+          ]
+          
+
+      # compileWithMaps: 
+      #   options: 
+      #     join: true
+      #     sourceMap: true
         
-        files: 
-          'scripts/all.js': ['scripts/coffee/**/*.coffee'] # concat then compile into single file
-          'spec/all.js':    ['spec/**/*.coffee']
+      #   files: 
+      #     'scripts/all.js': ['scripts/coffee/**/*.coffee'] # concat then compile into single file
     meta:
-      src:   'scripts/all.js'
-      specs: 'spec/all.js'
+      src:   ['scripts/**/*.js','!scripts/**/main.js']
+      specs: 'spec/**/*.js'
 
     watch:
       files: 'scripts/**/*.coffee'
@@ -25,7 +47,8 @@ module.exports = (grunt) ->
       src: '<%= meta.src %>'
       options:
         specs: '<%= meta.specs %>'
-        vendor: ['vendor/js/jasmine-given.js','scripts/pixi.dev.js']
+        vendor: ['vendor/js/jasmine-given.js','lib/pixi.dev.js','spec/compiled/audio_helper.js', 'lib/konami.js', 'lib/orientationEventDetection.js', 'lib/simple-events.js']
+
           
   grunt.loadNpmTasks('grunt-contrib-watch')
   grunt.loadNpmTasks('grunt-contrib-coffee')

@@ -12,16 +12,12 @@
     }
 
     AnimatedBase.prototype.initialize = function() {
-      initializeTexturePacks;
+      initializeTexturePacks();
       return AnimatedBase.__super__.initialize.call(this, this.texturePacks[0]);
     };
 
     AnimatedBase.prototype.initializeTexturePacks = function() {
       throw "You must override initializeTexturePacks";
-    };
-
-    AnimatedBase.prototype.getTexturePacks = function() {
-      return this.texturePacks;
     };
 
     AnimatedBase.prototype.addTexturePack = function(name, count, pattern, reverseLoop) {
@@ -38,7 +34,7 @@
           textures.push(this._buildTexture(i, pattern));
         }
       }
-      return textures;
+      return this.texturePacks.push(textures);
     };
 
     AnimatedBase.prototype._buildTexture = function(i, pattern) {

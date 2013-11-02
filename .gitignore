@@ -1,4 +1,6 @@
 
 .DS_Store
 bin/push_all.sh
-/node_modules/
+node_modules
+scripts/compiled/
+spec/compiled/
