@@ -1,6 +1,8 @@
 class Penguin extends AnimatedBase
 
   constructor: ->
+    Mixin.include(Penguin, Keyboardable)
+    Mixin.include(Penguin, PenguinMovementMethods)
     super
 
   initializeTexturePacks: () ->

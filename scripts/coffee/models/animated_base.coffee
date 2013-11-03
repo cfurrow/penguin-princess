@@ -17,6 +17,9 @@ class AnimatedBase extends PIXI.MovieClip
     textures.push(@_buildTexture(i, pattern)) for i in [count-1...0] by 1 if reverseLoop
     @texturePacks.push textures
 
+  tick: ->
+    # movement
+
   # private
   _buildTexture: (i, pattern) ->
     PIXI.Texture.fromImage(pattern) 
