@@ -27,13 +27,13 @@ class AnimatedBase #extends PIXI.MovieClip
   reset: ->
     throw "You must override reset"
 
-  switchTexturePackTo: (name, looping) ->
+  switchTexturePackTo: (name, looping=true) ->
     textures           = @getTexturePack(name)
     if textures?
       @activeTexturePack = name
       @clip.textures = textures
     @clip.loop              = looping
-    @clip.play()
+    @clip.gotoAndPlay(0)
 
   getActiveTexturePack: (name) ->
     @getTexturePack(@activeTexturePack)

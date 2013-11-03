@@ -6,19 +6,20 @@ root.PenguinMovementMethods =
     down: false
     left: false
     right: false
-    rotateRight: false
+
+  rotateRight: true
 
   onKeyUp: (event) ->
     @stop()
 
   onKeyDown: (event) ->
-    if(event.keyCode == 38)
-      # up
-      @moveUp()
+    # if(event.keyCode == 38)
+    #   # up
+    #   @moveUp()
     
-    if(event.keyCode == 40)
-      # down
-      @moveDown()
+    # if(event.keyCode == 40)
+    #   # down
+    #   @moveDown()
     
     if(event.keyCode == 37)
       # left
@@ -28,18 +29,18 @@ root.PenguinMovementMethods =
       # right
       @moveRight()
     
-    if(event.keyCode == 32)
-      # space
-      @moveUp()
+    # if(event.keyCode == 32)
+    #   # space
+    #   @moveUp()
     
 
   moveLeft: ->
     @resetMovement()
-    @movement.left  = true
+    @movement.left = true
 
   moveRight: ->
     @resetMovement()
-    @movement.right  = true
+    @movement.right = true
 
   moveUp: ->
 
