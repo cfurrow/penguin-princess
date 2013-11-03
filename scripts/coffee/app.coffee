@@ -3,7 +3,7 @@ class App
   @CANVASHEIGHT = 430
 
   constructor: (window) ->
-    @penguin        = new Penguin({minScreenX: 0, maxScreenX: App.CANVASWIDTH, showBoundingBox: true})
+    @penguin        = new Penguin({minScreenX: 0, maxScreenX: App.CANVASWIDTH, showHitBox: true})
     @snowStage      = null
     @snowTexture    = null
     @waterStage     = null
@@ -22,28 +22,10 @@ class App
     if !@showMeter
       @meter.hide()
     
-    #@showLoadingText()
-
-    @stage.addChild(@penguin.clip)
+    @stage.addChild(@penguin)
     requestAnimFrame( @animate )
     @listenToKeyboard()
 
-    # SimpleEvents.listen("assets.loaded",function(){
-    #   addGroundSnow();
-    #   addWater();
-    #   addFish();
-
-    #   penguin = new Penguin(); 
-    #   stage.addChild(penguin.stage);
-     
-    #   setupInteraction();
-    # },this);
-
-    # loadAssets();
-
-    # if(/debug/.test(location.search)){
-    #   $("#debug").show();
-    # }
   animate: () =>
     @meter.tickStart()
 
@@ -52,15 +34,11 @@ class App
     
     @penguin.tick(@meter.fps)
 
-    # for(var i=0; i<fishes.length; i++){
-    #   fishes[i].tick(meter.fps);
-    # }
-
     @meter.tick()
 
   listenToKeyboard: () ->
     @window.onkeydown = (e) =>
-      @penguin.onKeyDown(e)
+      @_passKeyDownEvent(child, e) for child in @stage.children
       if(e.metaKey == true)
         # don't capture meta-keys (command, etc)
         return true
@@ -75,7 +53,15 @@ class App
           @meter.show()
 
     @window.onkeyup = (e) =>
-      @penguin.onKeyUp(e)
+      @_passKeyUpEvent(child, e) for child in @stage.children
+
+  _passKeyDownEvent: (child, e) ->
+    if child.onKeyDown?
+      child.onKeyDown(e)
+      
+  _passKeyUpEvent: (child, e) ->
+    if child.onKeyUp?
+      child.onKeyUp(e)
  
 root = exports ? this
 root.App = App

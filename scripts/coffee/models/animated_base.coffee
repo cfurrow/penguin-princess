@@ -1,4 +1,4 @@
-class AnimatedBase 
+class AnimatedBase extends PIXI.MovieClip
 
   constructor: (options) ->
     @texturePacks       = []
@@ -6,15 +6,16 @@ class AnimatedBase
     @activeTexturePack  = 'normal'
 
     @initializeTexturePacks()
-    @clip               = new PIXI.MovieClip(@getActiveTexturePack())
+    #@clip               = new PIXI.MovieClip(@getActiveTexturePack())
+    super(@getActiveTexturePack())
     @hitBox             = new PIXI.Rectangle(0,0,0,0)        
     @visibleBoundingBox = new PIXI.Graphics()
     
-    @showBoundingBox         = if options.showBoundingBox? then true else false
-    if(@showBoundingBox)
+    @showHitBox         = if options.showHitBox? then true else false
+    if(@showHitBox)
       @visibleBoundingBox.lineStyle(5, 0xFF0000);
       @visibleBoundingBox.drawRect(0,0,180,180)
-      @clip.addChild(@visibleBoundingBox)
+      @addChild(@visibleBoundingBox)
 
   #override in base class 
   initializeTexturePacks: () ->
@@ -50,9 +51,9 @@ class AnimatedBase
     textures           = @getTexturePack(name)
     if textures?
       @activeTexturePack = name
-      @clip.textures = textures
-    @clip.loop              = looping
-    @clip.gotoAndPlay(0)
+      @textures = textures
+    @loop              = looping
+    @gotoAndPlay(0)
 
   getActiveTexturePack: (name) ->
     @getTexturePack(@activeTexturePack)
@@ -60,13 +61,15 @@ class AnimatedBase
   getTexturePack: (name) ->
     @texturePacks[ @texturePackMapping[name] ]
     
-  # private
+# private
+
+  # FIXME: this could use some cleanup. less instance vars, etc. rename?
   _setupHitBox: () ->
     return if @_hitBoxSetup
-    @hitBox.x = -Math.abs(@clip.width * @clip.anchor.x)
-    @hitBox.y = -Math.abs(@clip.height * @clip.anchor.y)
-    @hitBox.width = @clip.width
-    @hitBox.height = @clip.height
+    @hitBox.x = -Math.abs(@width * @anchor.x)
+    @hitBox.y = -Math.abs(@height * @anchor.y)
+    @hitBox.width = @width
+    @hitBox.height = @height
 
     @visibleBoundingBox.position.x = @hitBox.x
     @visibleBoundingBox.position.y = @hitBox.y
