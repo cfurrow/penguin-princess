@@ -10,7 +10,13 @@ root.PenguinMovementMethods =
   rotateRight: true
 
   onKeyUp: (event) ->
-    @stop()
+    if(event.keyCode == 37)
+      # left
+      @movement.left = false
+    
+    if(event.keyCode == 39)
+      # right
+      @movement.right = false
 
   onKeyDown: (event) ->
     # if(event.keyCode == 38)
