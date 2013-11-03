@@ -3,7 +3,6 @@ class App
   @CANVASHEIGHT = 430
 
   constructor: (window) ->
-    @stage          = null
     @penguin        = new Penguin()
     @snowStage      = null
     @snowTexture    = null
@@ -25,7 +24,7 @@ class App
     
     #@showLoadingText()
 
-    @stage.addChild(@penguin)
+    @stage.addChild(@penguin.clip)
     requestAnimFrame( @animate )
     @listenToKeyboard()
 
@@ -68,9 +67,9 @@ class App
       e.preventDefault()
       if(e.keyCode == 70)
         # f
-        @showMeter = @showMeter ? false : true;
+        @showMeter = if @showMeter then false else true;
         
-        if(!showMeter)
+        if(!@showMeter)
           @meter.hide()
         else
           @meter.show()

@@ -1,13 +1,11 @@
-class AnimatedBase extends PIXI.MovieClip
-
+class AnimatedBase #extends PIXI.MovieClip
   constructor: () ->
     @texturePacks       = []
     @texturePackMapping = {}
     @activeTexturePack  = 'normal'
 
     @initializeTexturePacks()
-  
-    super(@getActiveTexturePack())
+    @clip               = new PIXI.MovieClip(@getActiveTexturePack())
 
   #override in base class 
   initializeTexturePacks: () ->
@@ -33,9 +31,9 @@ class AnimatedBase extends PIXI.MovieClip
     textures           = @getTexturePack(name)
     if textures?
       @activeTexturePack = name
-      @setTextures(textures)
-    @loop              = looping
-    @play()
+      @clip.setTextures(textures)
+    @clip.loop              = looping
+    @clip.play()
 
   getActiveTexturePack: (name) ->
     @getTexturePack(@activeTexturePack)

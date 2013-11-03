@@ -6,6 +6,7 @@ root.PenguinMovementMethods =
     down: false
     left: false
     right: false
+    rotateRight: false
 
   onKeyUp: (event) ->
     @stop()

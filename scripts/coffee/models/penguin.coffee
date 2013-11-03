@@ -11,12 +11,12 @@ class Penguin extends AnimatedBase
     super()
     # pixi.js
 
-    @animationSpeed     = Penguin._ANIMATION_SPEED 
-    @position.x         = 150
-    @position.y         = 300 
-    @scale.x            = @scale.y = Penguin.SCALE
-    @anchor.x           = 0.5
-    @anchor.y           = 1
+    @clip.animationSpeed     = Penguin._ANIMATION_SPEED 
+    @clip.position.x         = 150
+    @clip.position.y         = 300 
+    @clip.scale.x            = @clip.scale.y = Penguin.SCALE
+    @clip.anchor.x           = 0.5
+    @clip.anchor.y           = 1
 
     # custom
     @fpsAdjustment          = 1
@@ -45,7 +45,7 @@ class Penguin extends AnimatedBase
     #   this.foof = null;
     # },this);
     
-    @gotoAndPlay(0)
+    @clip.gotoAndPlay(0)
 
   initializeTexturePacks: () ->
     @addTexturePack("normal",   4, 'images/frame_#{i}_512x512.png',          true)
@@ -53,33 +53,32 @@ class Penguin extends AnimatedBase
     @texturePacks
 
   reset: () ->
-    @position.x = 300
-    @scale.x = @scale.y = Penguin.SCALE
+    @clip.position.x = 300
+    @clip.scale.x = @clip.scale.y = Penguin.SCALE
     @resetMovement()
     @switchTexturePackTo('normal', true)
 
   tick: () =>
     if(@movement.left)
-      if(@position.x >= 0)
-        @position.x -= Penguin.MOVEMENT_PER_FRAME
-      @scale.x     = -Penguin.SCALE
+      if(@clip.position.x >= 0)
+        @clip.position.x -= Penguin.MOVEMENT_PER_FRAME
+      @clip.scale.x     = -Penguin.SCALE
     
     if(@movement.right)
       #if(@position.x <= window.CANVASWIDTH){
-      @position.x += Penguin.MOVEMENT_PER_FRAME
+      @clip.position.x += Penguin.MOVEMENT_PER_FRAME
       #}
-      @scale.x     = Penguin.SCALE
+      @clip.scale.x     = Penguin.SCALE
       
     if(@movement.left || @movement.right)
-      if(@movement.waddleRight)
-        @rotation += Penguin.ROTATE_PER_FRAME
-        if(@rotation >= Penguin.ROTATE_MAX)
-          @movement.waddleRight = false            
+      if(@movement.rotateRight)
+        @clip.rotation += Penguin.ROTATE_PER_FRAME
+        if(@clip.rotation >= Penguin.ROTATE_MAX)
+          @movement.rotateRight = false            
       else
-        @rotation -= Penguin.ROTATE_PER_FRAME
-        if(@rotation <= -Penguin.ROTATE_MAX)
-          @movement.waddleRight = true
-    
+        @clip.rotation -= Penguin.ROTATE_PER_FRAME
+        if(@clip.rotation <= -Penguin.ROTATE_MAX)
+          @movement.rotateRight = true
 
 root = exports ? this
 root.Penguin = Penguin
