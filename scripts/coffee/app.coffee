@@ -3,7 +3,7 @@ class App
   @CANVASHEIGHT = 430
 
   constructor: (window) ->
-    @penguin        = new Penguin({minScreenX: 0, maxScreenX: App.CANVASWIDTH, showHitBox: true})
+    @penguin        = new Penguin({minScreenX: 0, maxScreenX: App.CANVASWIDTH, hitAreaVisible: true})
     @snowStage      = null
     @snowTexture    = null
     @waterStage     = null
@@ -30,6 +30,7 @@ class App
     @meter.tickStart()
 
     requestAnimFrame( @animate )
+
     @renderer.render( @stage )
     
     @penguin.tick(@meter.fps)
@@ -58,7 +59,7 @@ class App
   _passKeyDownEvent: (child, e) ->
     if child.onKeyDown?
       child.onKeyDown(e)
-      
+
   _passKeyUpEvent: (child, e) ->
     if child.onKeyUp?
       child.onKeyUp(e)

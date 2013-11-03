@@ -8,14 +8,14 @@ class AnimatedBase extends PIXI.MovieClip
     @initializeTexturePacks()
     #@clip               = new PIXI.MovieClip(@getActiveTexturePack())
     super(@getActiveTexturePack())
-    @hitBox             = new PIXI.Rectangle(0,0,0,0)        
-    @visibleBoundingBox = new PIXI.Graphics()
+    @hitArea             = new PIXI.Rectangle(0,0,0,0)        
+    @hitAreaPrimitive = new PIXI.Graphics()
     
-    @showHitBox         = if options.showHitBox? then true else false
-    if(@showHitBox)
-      @visibleBoundingBox.lineStyle(5, 0xFF0000);
-      @visibleBoundingBox.drawRect(0,0,180,180)
-      @addChild(@visibleBoundingBox)
+    @hitAreaVisible         = if options.hitAreaVisible? then true else false
+    if(@hitAreaVisible)
+      @hitAreaPrimitive.lineStyle(5, 0xFF0000);
+      @hitAreaPrimitive.drawRect(0,0,180,180)
+      @showHitArea()
 
   #override in base class 
   initializeTexturePacks: () ->
@@ -31,9 +31,15 @@ class AnimatedBase extends PIXI.MovieClip
     @texturePackMapping[name] = @texturePacks.length - 1
     @texturePacks
 
+  showHitArea: () ->
+    @hitAreaVisible = true
+    @addChild(@hitAreaPrimitive)
+  hideHitArea: () ->
+    @hitAreaVisible = false
+    @removeChild(@hitAreaPrimitive)
  
   beforeTick: (fps)->
-    @_setupHitBox()
+    @_setupHitArea()
 
   onTick: (fps)->
 
@@ -64,17 +70,17 @@ class AnimatedBase extends PIXI.MovieClip
 # private
 
   # FIXME: this could use some cleanup. less instance vars, etc. rename?
-  _setupHitBox: () ->
+  _setupHitArea: () ->
     return if @_hitBoxSetup
-    @hitBox.x = -Math.abs(@width * @anchor.x)
-    @hitBox.y = -Math.abs(@height * @anchor.y)
-    @hitBox.width = @width
-    @hitBox.height = @height
+    @hitArea.x = -Math.abs(@width * @anchor.x)
+    @hitArea.y = -Math.abs(@height * @anchor.y)
+    @hitArea.width = @width
+    @hitArea.height = @height
 
-    @visibleBoundingBox.position.x = @hitBox.x
-    @visibleBoundingBox.position.y = @hitBox.y
-    @visibleBoundingBox.width      = @hitBox.width
-    @visibleBoundingBox.height     = @hitBox.height
+    @hitAreaPrimitive.position.x = @hitArea.x
+    @hitAreaPrimitive.position.y = @hitArea.y
+    @hitAreaPrimitive.width      = @hitArea.width
+    @hitAreaPrimitive.height     = @hitArea.height
     
     @_setupCount  = 0 unless @_setupCount?
     @_setupCount++
