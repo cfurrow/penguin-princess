@@ -28,13 +28,13 @@ module.exports = (grunt) ->
           ]
           
 
-      # compileWithMaps: 
-      #   options: 
-      #     join: true
-      #     sourceMap: true
+      compileWithMaps: 
+        options: 
+          join: true
+          sourceMap: true
         
-      #   files: 
-      #     'scripts/all.js': ['scripts/coffee/**/*.coffee'] # concat then compile into single file
+        files: 
+          'scripts/compiled/all.js': ['scripts/coffee/**/*.coffee'] # concat then compile into single file
     meta:
       src:   ['scripts/compiled/**/*.js','!scripts/**/main.js']
       specs: 'spec/**/*.js'

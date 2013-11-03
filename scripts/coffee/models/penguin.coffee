@@ -31,7 +31,7 @@ class Penguin extends AnimatedBase
     @click = @handleTouch
 
     @gotoAndPlay(0)
-    #@stage.addChild(@)
+    @stage.addChild(@)
 
     #@loadFart()
     
@@ -58,6 +58,30 @@ class Penguin extends AnimatedBase
     @scale.x = @scale.y = Penguin.SCALE
     @resetMovement()
     @switchTexturePackTo('normal', true)
+
+  tick: () ->
+    if(@movement.left)
+      if(@position.x >= 0)
+        @position.x -= @movePerFrame
+      @scale.x     = -Penguin.SCALE
+    
+    if(@movement.right)
+      #if(@position.x <= window.CANVASWIDTH){
+      @position.x += @movePerFrame
+      #}
+      @scale.x     = Penguin.SCALE
+      
+    if(@movement.left || @movement.right)
+      if(@movement.waddleRight )
+        @rotation += @rotatePerFrame
+        if(@rotation >= @rotateMax)
+          @movement.waddleRight = false
+              
+      else
+        @rotation -= @rotatePerFrame
+        if(@rotation <= -@rotateMax)
+          @movement.waddleRight = true
+    
 
 root = exports ? this
 root.Penguin = Penguin
