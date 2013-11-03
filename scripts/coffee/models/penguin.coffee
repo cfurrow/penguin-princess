@@ -11,7 +11,7 @@ class Penguin extends AnimatedBase
     super()
     # pixi.js
 
-    @clip.animationSpeed     = Penguin._ANIMATION_SPEED 
+    @clip.animationSpeed     = Penguin.ANIMATION_SPEED 
     @clip.position.x         = 150
     @clip.position.y         = 300 
     @clip.scale.x            = @clip.scale.y = Penguin.SCALE

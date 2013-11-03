@@ -31,7 +31,7 @@ class AnimatedBase #extends PIXI.MovieClip
     textures           = @getTexturePack(name)
     if textures?
       @activeTexturePack = name
-      @clip.setTextures(textures)
+      @clip.textures = textures
     @clip.loop              = looping
     @clip.play()
 
