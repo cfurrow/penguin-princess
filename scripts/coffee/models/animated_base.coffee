@@ -1,26 +1,24 @@
 class AnimatedBase extends PIXI.MovieClip
 
   constructor: () ->
-    @texturePacks = []
+    @texturePacks       = []
     @texturePackMapping = {}
     @activeTexturePack  = 'normal'
 
     @initializeTexturePacks()
   
-    super @getActiveTexturePack()
-    
-    @stage = new PIXI.Stage("",true)
+    super(@getActiveTexturePack())
 
   #override in base class 
   initializeTexturePacks: () ->
     throw "You must override initializeTexturePacks"
 
   #addTexturePack("normal", 4, "images/frame_#{i}_512x512.png", true)
-  addTexturePack: (name, count, pattern, reverseLoop=false) ->
+  addTexturePack: (name, count, pattern, reverseLoop = false) ->
     textures = []
     path = (i) -> pattern.replace("#\{i\}",i)
     textures.push(@_buildTexture(i, path(i))) for i in [0...count] by 1
-    textures.push(@_buildTexture(i, path(i))) for i in [count-1...0] by 1 if reverseLoop
+    textures.push(@_buildTexture(i, path(i))) for i in [count-1..0] by -1 if reverseLoop
     @texturePacks.push textures
     @texturePackMapping[name] = @texturePacks.length - 1
     @texturePacks
@@ -35,7 +33,7 @@ class AnimatedBase extends PIXI.MovieClip
     textures           = @getTexturePack(name)
     if textures?
       @activeTexturePack = name
-      @textures          = textures
+      @setTextures(textures)
     @loop              = looping
     @play()
 

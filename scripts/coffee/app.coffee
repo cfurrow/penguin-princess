@@ -25,7 +25,7 @@ class App
     
     #@showLoadingText()
 
-    @stage.addChild( @penguin.stage )
+    @stage.addChild(@penguin)
     requestAnimFrame( @animate )
     @listenToKeyboard()
 
@@ -48,7 +48,7 @@ class App
   animate: () =>
     @meter.tickStart()
 
-    #requestAnimFrame( @animate )
+    requestAnimFrame( @animate )
     @renderer.render( @stage )
     
     @penguin.tick(@meter.fps)
@@ -60,7 +60,7 @@ class App
     @meter.tick()
 
   listenToKeyboard: () ->
-    @window.onkeydown = (e)->
+    @window.onkeydown = (e) =>
       @penguin.onKeyDown(e)
       if(e.metaKey == true)
         # don't capture meta-keys (command, etc)
@@ -75,7 +75,7 @@ class App
         else
           @meter.show()
 
-    @window.onkeyup = (e) ->
+    @window.onkeyup = (e) =>
       @penguin.onKeyUp(e)
  
 root = exports ? this
