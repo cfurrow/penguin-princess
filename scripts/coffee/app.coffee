@@ -3,7 +3,7 @@ class App
   @CANVASHEIGHT = 430
 
   constructor: (window) ->
-    @penguin        = new Penguin({minScreenX: 0, maxScreenX: App.CANVASWIDTH, hitAreaVisible: true})
+    @penguin        = new Penguin({minScreenX: 0, maxScreenX: App.CANVASWIDTH, hitAreaVisible: false})
     @snowStage      = null
     @snowTexture    = null
     @waterStage     = null

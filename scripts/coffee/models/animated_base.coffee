@@ -10,9 +10,9 @@ class AnimatedBase extends PIXI.MovieClip
     super(@getActiveTexturePack())
     @gotoAndPlay(0)
     @hitArea             = new PIXI.Rectangle(0,0,0,0)        
-    @hitAreaPrimitive = new PIXI.Graphics()
+    @hitAreaPrimitive    = new PIXI.Graphics()
     
-    @hitAreaVisible         = if options.hitAreaVisible? then true else false
+    @hitAreaVisible         = if options.hitAreaVisible then true else false
     if(@hitAreaVisible)
       @showHitArea()
 
