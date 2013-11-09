@@ -4,29 +4,31 @@ class Penguin extends AnimatedBase
   @ROTATE_PER_FRAME   = 0.025
   @ROTATE_MAX         = 0.08
 
-  constructor: (options) ->
+  constructor: (options={hitAreaVisible:false, minScreenX:0, maxScreenX:800}) ->
     Mixin.include(Penguin, Keyboardable)
     Mixin.include(Penguin, PenguinMovementMethods)
     super(options)
+    @width  = 79
+    @height = 121
 
     # pixi.js
     @animationSpeed     = Penguin.ANIMATION_SPEED 
     @position.x         = 150
-    @position.y         = 300 
-    @anchor.x           = 0.5
-    @anchor.y           = 1
+    @position.y         = 200 
+    # @anchor.x           = 0.5
+    # @anchor.y           = 1
+
+    @pivot.x = @width/2
+    @pivot.y = @height
 
     # custom
     @fpsAdjustment           = 1
     @minScreenX              = if options.minScreenX? then options.minScreenX else 0
     @maxScreenX              = if options.maxScreenX? then options.maxScreenX else 800
 
-    @gotoAndPlay(0)
-    
-
   initializeTexturePacks: () ->
-    @addTexturePack("normal",   4, 'images/frame_#{i}_180x180.png',          true)
-    @addTexturePack("surprise", 9, 'images/surprise_frame_#{i}_512x512.png', false)
+    @addTexturePack("normal",   4, 'images/penguin/frame_#{i}_79x121.png',          true)
+    @addTexturePack("surprise", 9, 'images/penguin/surprise_frame_#{i}_512x512.png', false)
     @texturePacks
 
   reset: () ->

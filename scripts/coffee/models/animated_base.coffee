@@ -1,6 +1,6 @@
 class AnimatedBase extends PIXI.MovieClip
 
-  constructor: (options) ->
+  constructor: (options={hitAreaVisible: false}) ->
     @texturePacks       = []
     @texturePackMapping = {}
     @activeTexturePack  = 'normal'
@@ -8,13 +8,12 @@ class AnimatedBase extends PIXI.MovieClip
     @initializeTexturePacks()
     #@clip               = new PIXI.MovieClip(@getActiveTexturePack())
     super(@getActiveTexturePack())
+    @gotoAndPlay(0)
     @hitArea             = new PIXI.Rectangle(0,0,0,0)        
     @hitAreaPrimitive = new PIXI.Graphics()
     
     @hitAreaVisible         = if options.hitAreaVisible? then true else false
     if(@hitAreaVisible)
-      @hitAreaPrimitive.lineStyle(5, 0xFF0000);
-      @hitAreaPrimitive.drawRect(0,0,180,180)
       @showHitArea()
 
   #override in base class 
@@ -34,6 +33,7 @@ class AnimatedBase extends PIXI.MovieClip
   showHitArea: () ->
     @hitAreaVisible = true
     @addChild(@hitAreaPrimitive)
+
   hideHitArea: () ->
     @hitAreaVisible = false
     @removeChild(@hitAreaPrimitive)
@@ -72,6 +72,8 @@ class AnimatedBase extends PIXI.MovieClip
   # FIXME: this could use some cleanup. less instance vars, etc. rename?
   _setupHitArea: () ->
     return if @_hitBoxSetup
+    @hitAreaPrimitive.lineStyle(5, 0xFF0000);
+    @hitAreaPrimitive.drawRect(0,0,@width,@width)
     @hitArea.x = -Math.abs(@width * @anchor.x)
     @hitArea.y = -Math.abs(@height * @anchor.y)
     @hitArea.width = @width

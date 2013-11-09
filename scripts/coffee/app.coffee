@@ -11,7 +11,7 @@ class App
     @fishes         = []
 
     @stage           = new PIXI.Stage(0x5bb5ff, true) 
-    @renderer        = PIXI.autoDetectRenderer(App.CANVASWIDTH, App.CANVASHEIGHT)
+    @renderer        = new PIXI.WebGLRenderer(App.CANVASWIDTH, App.CANVASHEIGHT)
     
     @window   = window
     @document = window.document
