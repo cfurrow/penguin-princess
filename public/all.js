@@ -11563,14 +11563,22 @@ The number of steps.
   }
 }).call(this);
 
-var Penguin;
+var Penguin,
+  __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
 
 Penguin = (function() {
   function Penguin() {
+    this.tick = __bind(this.tick, this);
+    this.keyDown = __bind(this.keyDown, this);
+    this.keyUp = __bind(this.keyUp, this);
     this.texture = PIXI.Texture.fromImage('assets/images/penguin.png');
     this.sprite = new PIXI.Sprite(this.texture);
     this.sprite.anchor.x = 0.5;
     this.sprite.anchor.y = 1.0;
+    this.movement = {
+      left: false,
+      right: false
+    };
   }
 
   Penguin.prototype.width = function(w) {
@@ -11609,7 +11617,107 @@ Penguin = (function() {
     return this.sprite.position;
   };
 
+  Penguin.prototype.keyUp = function(e) {
+    if (e.keyCode === 39) {
+      return this.movement.right = false;
+    } else if (e.keyCode === 37) {
+      return this.movement.left = false;
+    }
+  };
+
+  Penguin.prototype.keyDown = function(e) {
+    if (e.keyCode === 39) {
+      this.movement.right = true;
+      return this.movement.left = false;
+    } else if (e.keyCode === 37) {
+      this.movement.left = true;
+      return this.movement.right = false;
+    }
+  };
+
+  Penguin.prototype.tick = function() {
+    if (this.movement.right) {
+      return this.sprite.position.x += 5;
+    } else if (this.movement.left) {
+      return this.sprite.position.x -= 5;
+    }
+  };
+
   return Penguin;
+
+})();
+
+var Interaction,
+  __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
+
+Interaction = (function() {
+  function Interaction() {
+    this.runKeyPresses = __bind(this.runKeyPresses, this);
+    this.runKeyDowns = __bind(this.runKeyDowns, this);
+    this.addKeyDown = __bind(this.addKeyDown, this);
+    this.runKeyUps = __bind(this.runKeyUps, this);
+    this.addKeyUp = __bind(this.addKeyUp, this);
+    this.keyUpEvents = [];
+    this.keyDownEvents = [];
+    this.keyPressEvents = [];
+    this.addEventListener(window, 'keyup', this.runKeyUps);
+    this.addEventListener(window, 'keydown', this.runKeyDowns);
+    this.addEventListener(window, 'keypress', this.runKeyPresses);
+  }
+
+  Interaction.prototype.addKeyUp = function(fn) {
+    return this.keyUpEvents.push(fn);
+  };
+
+  Interaction.prototype.runKeyUps = function(e) {
+    var cb, _i, _len, _ref;
+    this.cancelBubble(e);
+    _ref = this.keyUpEvents;
+    for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+      cb = _ref[_i];
+      cb(e);
+    }
+    return false;
+  };
+
+  Interaction.prototype.addKeyDown = function(fn) {
+    return this.keyDownEvents.push(fn);
+  };
+
+  Interaction.prototype.runKeyDowns = function(e) {
+    var cb, _i, _len, _ref;
+    this.cancelBubble(e);
+    _ref = this.keyDownEvents;
+    for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+      cb = _ref[_i];
+      cb(e);
+    }
+    return false;
+  };
+
+  Interaction.prototype.runKeyPresses = function(e) {
+    this.cancelBubble(e);
+    return false;
+  };
+
+  Interaction.prototype.addEventListener = function(elem, name, func) {
+    if (elem.addEventListener != null) {
+      return elem.addEventListener(name, func);
+    } else {
+      return elem.attachEvent(name, func);
+    }
+  };
+
+  Interaction.prototype.cancelBubble = function(e) {
+    if (e != null) {
+      e.preventDefault();
+      return e.stopPropagation();
+    } else {
+      return window.event.cancelBubble = true;
+    }
+  };
+
+  return Interaction;
 
 })();
 
@@ -11630,15 +11738,17 @@ Game = (function() {
     this.scene = document.getElementById('scene');
     this.renderer = PIXI.autoDetectRenderer(WIDTH, HEIGHT);
     this.scene.appendChild(this.renderer.view);
+    this.interaction = new Interaction();
     this.penguin = new Penguin();
-    this.penguin.width(100);
-    this.penguin.height(100);
     this.penguin.position(100, HEIGHT);
+    this.interaction.addKeyUp(this.penguin.keyUp);
+    this.interaction.addKeyDown(this.penguin.keyDown);
     this.stage.addChild(this.penguin.sprite);
   }
 
   Game.prototype.tick = function() {
     requestAnimFrame(this.tick);
+    this.penguin.tick();
     return this.renderer.render(this.stage);
   };
 

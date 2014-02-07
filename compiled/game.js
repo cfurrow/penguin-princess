@@ -15,15 +15,19 @@ Game = (function() {
     this.scene = document.getElementById('scene');
     this.renderer = PIXI.autoDetectRenderer(WIDTH, HEIGHT);
     this.scene.appendChild(this.renderer.view);
+    this.interaction = new Interaction();
     this.penguin = new Penguin();
     this.penguin.width(100);
     this.penguin.height(100);
     this.penguin.position(100, HEIGHT);
+    this.interaction.addKeyUp(this.penguin.keyUp);
+    this.interaction.addKeyDown(this.penguin.keyDown);
     this.stage.addChild(this.penguin.sprite);
   }
 
   Game.prototype.tick = function() {
     requestAnimFrame(this.tick);
+    this.penguin.tick();
     return this.renderer.render(this.stage);
   };
 

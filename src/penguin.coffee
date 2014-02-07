@@ -6,6 +6,8 @@ class Penguin
     @sprite.anchor.x = 0.5
     @sprite.anchor.y = 1.0
 
+    @movement =  {left: false, right: false}
+
   width: (w=null) ->
     if w?
       @sprite.width = w
@@ -21,7 +23,24 @@ class Penguin
       @sprite.position.x = x
     if y?
       @sprite.position.y = y
-
     @sprite.position
-  
 
+  keyUp: (e) =>
+    if e.keyCode == 39 # right
+      @movement.right = false
+    else if e.keyCode == 37 # left
+      @movement.left = false
+
+  keyDown: (e) =>
+    if e.keyCode == 39 # right
+      @movement.right = true
+      @movement.left = false      
+    else if e.keyCode == 37 # left
+      @movement.left = true
+      @movement.right = false
+  
+  tick: =>
+    if @movement.right
+      @sprite.position.x += 5
+    else if @movement.left
+      @sprite.position.x -= 5
