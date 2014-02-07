@@ -7,6 +7,12 @@ class Game
     @renderer = PIXI.autoDetectRenderer(WIDTH, HEIGHT)
     @scene.appendChild(@renderer.view)
 
+    @penguin = new Penguin()
+    @penguin.width(100)
+    @penguin.height(100)
+    @penguin.position(100, HEIGHT)
+    @stage.addChild(@penguin.sprite)
+
   tick: =>
     requestAnimFrame(@tick)
     @renderer.render(@stage)
