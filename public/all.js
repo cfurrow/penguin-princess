@@ -11652,14 +11652,14 @@ var Background,
   __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
 
 Background = (function() {
-  function Background(imgPath, distance, baseMovement) {
+  function Background(imgPath, distance, baseMovement, width, height) {
     this.tick = __bind(this.tick, this);
     this.keyUp = __bind(this.keyUp, this);
     this.keyDown = __bind(this.keyDown, this);
     this.distance = distance.toFixed(3);
     this.baseMovement = baseMovement.toFixed(3);
     this.texture = PIXI.Texture.fromImage(imgPath);
-    this.sprite = new PIXI.Sprite(this.texture);
+    this.sprite = new PIXI.TilingSprite(this.texture, width, height);
     this.movement = {
       left: false,
       right: false
@@ -11797,11 +11797,11 @@ Game = (function() {
     this.penguin.width(100);
     this.penguin.height(100);
     this.penguin.position(100, HEIGHT);
-    this.mountain = new Background('./assets/images/mountain-01.gif', 3, this.penguin.baseMovement);
-    this.mountain.sprite.position.x = 0;
+    this.mountain = new Background('./assets/images/mountain-01.gif', 3, this.penguin.baseMovement, 3200, 342);
+    this.mountain.sprite.position.x = -800;
     this.mountain.sprite.position.y = HEIGHT;
-    this.mountain2 = new Background('./assets/images/mountain-02.gif', 6, this.penguin.baseMovement);
-    this.mountain2.sprite.position.x = 300;
+    this.mountain2 = new Background('./assets/images/mountain-02.gif', 6, this.penguin.baseMovement, 3200, 342);
+    this.mountain2.sprite.position.x = -300;
     this.mountain2.sprite.position.y = HEIGHT;
     this.interaction.addKeyUp(this.penguin.keyUp);
     this.interaction.addKeyDown(this.penguin.keyDown);
@@ -11809,8 +11809,8 @@ Game = (function() {
     this.interaction.addKeyDown(this.mountain.keyDown);
     this.interaction.addKeyUp(this.mountain2.keyUp);
     this.interaction.addKeyDown(this.mountain2.keyDown);
-    this.stage.addChild(this.mountain.sprite);
     this.stage.addChild(this.mountain2.sprite);
+    this.stage.addChild(this.mountain.sprite);
     this.stage.addChild(this.penguin.sprite);
   }
 

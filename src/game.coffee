@@ -14,12 +14,12 @@ class Game
     @penguin.height(100)
     @penguin.position(100, HEIGHT)
 
-    @mountain = new Background('./assets/images/mountain-01.gif', 3, @penguin.baseMovement)
-    @mountain.sprite.position.x = 0
+    @mountain = new Background('./assets/images/mountain-01.gif', 3, @penguin.baseMovement, 3200, 342)
+    @mountain.sprite.position.x = -800
     @mountain.sprite.position.y = HEIGHT
 
-    @mountain2 = new Background('./assets/images/mountain-02.gif', 6, @penguin.baseMovement)
-    @mountain2.sprite.position.x = 300
+    @mountain2 = new Background('./assets/images/mountain-02.gif', 6, @penguin.baseMovement, 3200, 342)
+    @mountain2.sprite.position.x = -300
     @mountain2.sprite.position.y = HEIGHT
 
     @interaction.addKeyUp(@penguin.keyUp)
@@ -30,8 +30,8 @@ class Game
     @interaction.addKeyUp(@mountain2.keyUp)
     @interaction.addKeyDown(@mountain2.keyDown)
 
-    @stage.addChild(@mountain.sprite)
     @stage.addChild(@mountain2.sprite)
+    @stage.addChild(@mountain.sprite)
     @stage.addChild(@penguin.sprite)
 
   tick: =>

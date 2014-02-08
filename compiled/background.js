@@ -2,14 +2,14 @@ var Background,
   __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
 
 Background = (function() {
-  function Background(imgPath, distance, baseMovement) {
+  function Background(imgPath, distance, baseMovement, width, height) {
     this.tick = __bind(this.tick, this);
     this.keyUp = __bind(this.keyUp, this);
     this.keyDown = __bind(this.keyDown, this);
     this.distance = distance.toFixed(3);
     this.baseMovement = baseMovement.toFixed(3);
     this.texture = PIXI.Texture.fromImage(imgPath);
-    this.sprite = new PIXI.Sprite(this.texture);
+    this.sprite = new PIXI.TilingSprite(this.texture, width, height);
     this.movement = {
       left: false,
       right: false
