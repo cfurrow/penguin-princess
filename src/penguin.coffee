@@ -6,6 +6,8 @@ class Penguin
     @sprite.anchor.x = 0.5
     @sprite.anchor.y = 1.0
 
+    @baseMovement    = 5
+
     @movement =  {left: false, right: false}
 
   width: (w=null) ->
@@ -41,6 +43,6 @@ class Penguin
   
   tick: =>
     if @movement.right
-      @sprite.position.x += 5
+      @sprite.position.x += @baseMovement
     else if @movement.left
-      @sprite.position.x -= 5
+      @sprite.position.x -= @baseMovement

@@ -11575,6 +11575,7 @@ Penguin = (function() {
     this.sprite = new PIXI.Sprite(this.texture);
     this.sprite.anchor.x = 0.5;
     this.sprite.anchor.y = 1.0;
+    this.baseMovement = 5;
     this.movement = {
       left: false,
       right: false
@@ -11637,13 +11638,62 @@ Penguin = (function() {
 
   Penguin.prototype.tick = function() {
     if (this.movement.right) {
-      return this.sprite.position.x += 5;
+      return this.sprite.position.x += this.baseMovement;
     } else if (this.movement.left) {
-      return this.sprite.position.x -= 5;
+      return this.sprite.position.x -= this.baseMovement;
     }
   };
 
   return Penguin;
+
+})();
+
+var Background,
+  __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
+
+Background = (function() {
+  function Background(imgPath, distance, baseMovement) {
+    this.tick = __bind(this.tick, this);
+    this.keyUp = __bind(this.keyUp, this);
+    this.keyDown = __bind(this.keyDown, this);
+    this.distance = distance.toFixed(3);
+    this.baseMovement = baseMovement.toFixed(3);
+    this.texture = PIXI.Texture.fromImage(imgPath);
+    this.sprite = new PIXI.Sprite(this.texture);
+    this.movement = {
+      left: false,
+      right: false
+    };
+    this.sprite.anchor.y = 1.0;
+  }
+
+  Background.prototype.keyDown = function(e) {
+    if (e.keyCode === 39) {
+      this.movement.right = false;
+      return this.movement.left = true;
+    } else if (e.keyCode === 37) {
+      this.movement.left = false;
+      return this.movement.right = true;
+    }
+  };
+
+  Background.prototype.keyUp = function(e) {
+    if (e.keyCode === 39) {
+      return this.movement.left = false;
+    } else if (e.keyCode === 37) {
+      return this.movement.right = false;
+    }
+  };
+
+  Background.prototype.tick = function() {
+    if (this.movement.right) {
+      return this.sprite.position.x += this.baseMovement / this.distance;
+    } else if (this.movement.left) {
+      return this.sprite.position.x -= this.baseMovement / this.distance;
+    }
+  };
+
+  return Background;
 
 })();
 
@@ -11652,14 +11702,15 @@ var Interaction,
 
 Interaction = (function() {
   function Interaction() {
+    this.defaultEvent = __bind(this.defaultEvent, this);
     this.runKeyPresses = __bind(this.runKeyPresses, this);
     this.runKeyDowns = __bind(this.runKeyDowns, this);
     this.addKeyDown = __bind(this.addKeyDown, this);
     this.runKeyUps = __bind(this.runKeyUps, this);
     this.addKeyUp = __bind(this.addKeyUp, this);
-    this.keyUpEvents = [];
-    this.keyDownEvents = [];
-    this.keyPressEvents = [];
+    this.keyUpEvents = [this.defaultEvent];
+    this.keyDownEvents = [this.defaultEvent];
+    this.keyPressEvents = [this.defaultEvent];
     this.addEventListener(window, 'keyup', this.runKeyUps);
     this.addEventListener(window, 'keydown', this.runKeyDowns);
     this.addEventListener(window, 'keypress', this.runKeyPresses);
@@ -11671,7 +11722,6 @@ Interaction = (function() {
 
   Interaction.prototype.runKeyUps = function(e) {
     var cb, _i, _len, _ref;
-    this.cancelBubble(e);
     _ref = this.keyUpEvents;
     for (_i = 0, _len = _ref.length; _i < _len; _i++) {
       cb = _ref[_i];
@@ -11686,7 +11736,6 @@ Interaction = (function() {
 
   Interaction.prototype.runKeyDowns = function(e) {
     var cb, _i, _len, _ref;
-    this.cancelBubble(e);
     _ref = this.keyDownEvents;
     for (_i = 0, _len = _ref.length; _i < _len; _i++) {
       cb = _ref[_i];
@@ -11696,7 +11745,6 @@ Interaction = (function() {
   };
 
   Interaction.prototype.runKeyPresses = function(e) {
-    this.cancelBubble(e);
     return false;
   };
 
@@ -11714,6 +11762,12 @@ Interaction = (function() {
       return e.stopPropagation();
     } else {
       return window.event.cancelBubble = true;
+    }
+  };
+
+  Interaction.prototype.defaultEvent = function(e) {
+    if (!(e.keyCode === 82 && e.metaKey)) {
+      return this.cancelBubble();
     }
   };
 
@@ -11740,15 +11794,31 @@ Game = (function() {
     this.scene.appendChild(this.renderer.view);
     this.interaction = new Interaction();
     this.penguin = new Penguin();
+    this.penguin.width(100);
+    this.penguin.height(100);
     this.penguin.position(100, HEIGHT);
+    this.mountain = new Background('./assets/images/mountain-01.gif', 3, this.penguin.baseMovement);
+    this.mountain.sprite.position.x = 0;
+    this.mountain.sprite.position.y = HEIGHT;
+    this.mountain2 = new Background('./assets/images/mountain-02.gif', 6, this.penguin.baseMovement);
+    this.mountain2.sprite.position.x = 300;
+    this.mountain2.sprite.position.y = HEIGHT;
     this.interaction.addKeyUp(this.penguin.keyUp);
     this.interaction.addKeyDown(this.penguin.keyDown);
+    this.interaction.addKeyUp(this.mountain.keyUp);
+    this.interaction.addKeyDown(this.mountain.keyDown);
+    this.interaction.addKeyUp(this.mountain2.keyUp);
+    this.interaction.addKeyDown(this.mountain2.keyDown);
+    this.stage.addChild(this.mountain.sprite);
+    this.stage.addChild(this.mountain2.sprite);
     this.stage.addChild(this.penguin.sprite);
   }
 
   Game.prototype.tick = function() {
     requestAnimFrame(this.tick);
     this.penguin.tick();
+    this.mountain.tick();
+    this.mountain2.tick();
     return this.renderer.render(this.stage);
   };
 

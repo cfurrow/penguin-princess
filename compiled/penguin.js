@@ -10,6 +10,7 @@ Penguin = (function() {
     this.sprite = new PIXI.Sprite(this.texture);
     this.sprite.anchor.x = 0.5;
     this.sprite.anchor.y = 1.0;
+    this.baseMovement = 5;
     this.movement = {
       left: false,
       right: false
@@ -72,9 +73,9 @@ Penguin = (function() {
 
   Penguin.prototype.tick = function() {
     if (this.movement.right) {
-      return this.sprite.position.x += 5;
+      return this.sprite.position.x += this.baseMovement;
     } else if (this.movement.left) {
-      return this.sprite.position.x -= 5;
+      return this.sprite.position.x -= this.baseMovement;
     }
   };
 

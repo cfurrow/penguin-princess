@@ -1,8 +1,8 @@
 class Interaction
   constructor: ()->
-    @keyUpEvents    = []
-    @keyDownEvents  = []
-    @keyPressEvents = []
+    @keyUpEvents    = [@defaultEvent]
+    @keyDownEvents  = [@defaultEvent]
+    @keyPressEvents = [@defaultEvent]
 
     @addEventListener(window, 'keyup', @runKeyUps)
     @addEventListener(window, 'keydown', @runKeyDowns)
@@ -12,7 +12,6 @@ class Interaction
     @keyUpEvents.push(fn)
 
   runKeyUps: (e) =>
-    @cancelBubble(e)
     cb(e) for cb in @keyUpEvents
     false
 
@@ -20,12 +19,10 @@ class Interaction
     @keyDownEvents.push(fn)
 
   runKeyDowns: (e) =>
-    @cancelBubble(e)
     cb(e) for cb in @keyDownEvents
     false
 
   runKeyPresses: (e) =>
-    @cancelBubble(e)
     false
 
   addEventListener: (elem, name, func) ->
@@ -40,3 +37,7 @@ class Interaction
       e.stopPropagation()
     else
       window.event.cancelBubble = true
+
+  defaultEvent: (e) =>
+    unless e.keyCode == 82 && e.metaKey
+      @cancelBubble()

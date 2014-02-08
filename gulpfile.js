@@ -13,6 +13,7 @@ gulp.task('coffee', function() {
 gulp.task('concat', ['coffee'], function(){
   gulp.src(['./lib/pixi.dev.js', 
             './compiled/penguin.js', 
+            './compiled/background.js', 
             './compiled/interaction.js', 
             './compiled/game.js',
             './compiled/main.js'])

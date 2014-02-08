@@ -20,14 +20,28 @@ Game = (function() {
     this.penguin.width(100);
     this.penguin.height(100);
     this.penguin.position(100, HEIGHT);
+    this.mountain = new Background('./assets/images/mountain-01.gif', 3, this.penguin.baseMovement);
+    this.mountain.sprite.position.x = 0;
+    this.mountain.sprite.position.y = HEIGHT;
+    this.mountain2 = new Background('./assets/images/mountain-02.gif', 6, this.penguin.baseMovement);
+    this.mountain2.sprite.position.x = 300;
+    this.mountain2.sprite.position.y = HEIGHT;
     this.interaction.addKeyUp(this.penguin.keyUp);
     this.interaction.addKeyDown(this.penguin.keyDown);
+    this.interaction.addKeyUp(this.mountain.keyUp);
+    this.interaction.addKeyDown(this.mountain.keyDown);
+    this.interaction.addKeyUp(this.mountain2.keyUp);
+    this.interaction.addKeyDown(this.mountain2.keyDown);
+    this.stage.addChild(this.mountain.sprite);
+    this.stage.addChild(this.mountain2.sprite);
     this.stage.addChild(this.penguin.sprite);
   }
 
   Game.prototype.tick = function() {
     requestAnimFrame(this.tick);
     this.penguin.tick();
+    this.mountain.tick();
+    this.mountain2.tick();
     return this.renderer.render(this.stage);
   };
 
