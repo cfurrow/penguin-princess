@@ -2,10 +2,11 @@ requirejs.config({
     baseUrl: 'lib',
 
     paths: {
-      app: '../public'
+      app: '../public',
+      pixi: 'pixi.dev'
     }
 });
 
-requirejs ['app/game','pixi.dev'], (Game, PIXI) ->
+requirejs ['app/game','pixi'], (Game, PIXI) ->
   game = new Game()
   game.start()

@@ -4,7 +4,7 @@ define (require, exports, module) ->
     Interaction       = require('app/interaction')
     Penguin           = require('app/penguin')
     Ground            = require('app/ground')
-    PIXI              = require('pixi.dev')
+    PIXI              = require('pixi')
 
     class Game
       WIDTH  = 800

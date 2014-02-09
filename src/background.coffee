@@ -1,11 +1,5 @@
-class Background
-  constructor: (imgPath, distance, baseMovement, width, height) ->
-    @distance = distance.toFixed(3)
-    @baseMovement = baseMovement.toFixed(3)
-    @texture  = PIXI.Texture.fromImage(imgPath)
-    @sprite   = new PIXI.TilingSprite(@texture, width, height)
-    @movement = { left: false, right: false }
-    @sprite.anchor.y = 1.0
+define (require, exports, module) ->
+  PIXI = require('pixi')
 
   keyDown: (e) =>
     if e.keyCode == 39 # right
