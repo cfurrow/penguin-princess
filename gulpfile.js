@@ -10,12 +10,12 @@ gulp.task('coffee', function() {
     .pipe(gulp.dest('./compiled/'))
 });
 
-gulp.task('concat', ['coffee'], function(){
+gulp.task('move', ['coffee'], function(){
   gulp.src(['./compiled/*.js'])
     .pipe(gulp.dest('./public/'))
 });
 
-gulp.task('default', ['concat'], function(){
+gulp.task('default', ['move'], function(){
   // place code for your default task here
 });
 

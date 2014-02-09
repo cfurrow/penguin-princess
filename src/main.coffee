@@ -1,12 +1,20 @@
 requirejs.config({
+    shim: {
+      'promise-0.1.1.min': {       
+        exports: 'Promise'
+      },
+    },
+
     baseUrl: 'lib',
 
     paths: {
       app: '../public',
-      pixi: 'pixi.dev'
+      pixi: 'pixi.dev',
+      promise: 'promise-0.1.1.min'
     }
 });
 
-requirejs ['app/game','pixi'], (Game, PIXI) ->
+requirejs ['app/game','pixi', 'promise'], (Game, PIXI) ->
   game = new Game()
-  game.start()
+  window.game = game
+  

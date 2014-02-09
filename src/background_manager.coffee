@@ -1,9 +1,24 @@
-class BackgroundManager
-  constructor: ->
-    @backgrounds = []
+define (require, exports, module) ->
+  Background = require('app/background')
 
-  addBackground: (background) =>
-    @backgrounds.push(background)  
+  class BackgroundManager
+    constructor: ->
+      @backgrounds = []
+
+    addBackground: (background) =>
+      @backgrounds.push(background)  
+      
+    addBackgroundsFromData: (dataArray) =>
+      @addBackground(@buildBackground(data)) for data in dataArray
+
+    buildBackground: (data) =>
+      # TODO: get 'basemovement'
+      # TODO: refactor constructor to take data
+      # TODO: be able to parse 'max'
+      bg = new Background(data.texture, data.distance, 5, data.width, data.height)
+      bg.sprite.position.x = data.x
+      bg.sprite.position.y = data.y
+      bg
 
   addBackgroundsToStage: (stage) =>
     stage.addChild(bg.sprite) for bg in @backgrounds
