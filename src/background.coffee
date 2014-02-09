@@ -5,7 +5,12 @@ define (require, exports, module) ->
     constructor: (options) ->
       @distance = options.distance.toFixed(3)
       @texture  = PIXI.Texture.fromImage(options.texture)
-      @sprite   = new PIXI.TilingSprite(@texture, options.width, options.height)
+      if options.repeat? && !options.repeat
+        @sprite   = new PIXI.Sprite(@texture)
+        @sprite.width = options.width
+        @sprite.height = options.height
+      else
+        @sprite   = new PIXI.TilingSprite(@texture, options.width, options.height)
       @movement = { left: false, right: false }
       @sprite.anchor.y = 1.0
 
