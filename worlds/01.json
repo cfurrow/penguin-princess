@@ -21,6 +21,14 @@
       "x": -100,
       "y": 600,
       "distance": 20
+    },
+    {
+      "width": 3200,
+      "height": 50,
+      "texture": "assets/images/snow.gif",
+      "x": -500,
+      "y": 600,
+      "distance": 3
     }
   ]
 }

@@ -31,9 +31,6 @@ define (require, exports, module) ->
         @backgroundManager.addBackgroundsFromData(@level.levelData.backgrounds)
         @backgroundManager.addBackgroundsToStage(@stage)
 
-        @ground = new Ground(WIDTH, HEIGHT)
-        
-        @stage.addChild(@ground.sprite)
         @stage.addChild(@penguin.sprite)
 
         @start()
