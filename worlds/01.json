@@ -12,7 +12,7 @@
       "texture": "assets/images/mountain-01.gif",
       "x": 0,
       "y": 600,
-      "distance": 20
+      "distance": 30
     },
     {
       "width": 3200,
@@ -20,7 +20,7 @@
       "texture": "assets/images/mountain-02.gif",
       "x": -100,
       "y": 600,
-      "distance": 30
+      "distance": 20
     }
   ]
 }
