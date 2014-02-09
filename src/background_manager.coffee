@@ -19,17 +19,17 @@ define (require, exports, module) ->
       bg.sprite.position.y = data.y
       bg
 
-  addBackgroundsToStage: (stage) =>
-    stage.addChild(bg.sprite) for bg in @backgrounds
+    addBackgroundsToStage: (stage) =>
+      stage.addChild(bg.sprite) for bg in @backgrounds
 
-  addKeyUps: (interaction) =>
-    interaction.addKeyUp(bg.keyUp) for bg in @backgrounds
+    addKeyUps: (interaction) =>
+      interaction.addKeyUp(bg.keyUp) for bg in @backgrounds
 
-  addKeyDowns: (interaction) =>
-    interaction.addKeyDown(bg.keyDown) for bg in @backgrounds
+    addKeyDowns: (interaction) =>
+      interaction.addKeyDown(bg.keyDown) for bg in @backgrounds
 
 
-  tick: (playVelocity)=>
-    bg.tick(playVelocity) for bg in @backgrounds
+    tick: (playVelocity)=>
+      bg.tick(playVelocity) for bg in @backgrounds
 
   exports.BackgroundManager = BackgroundManager
