@@ -26,7 +26,7 @@ define (require, exports, module) ->
       @interaction.addKeyUp(@penguin.keyUp)
       @interaction.addKeyDown(@penguin.keyDown)
 
-      @level    = new Level '/worlds/01.json', ()=>
+      @level    = new Level 'worlds/01.json', ()=>
         @backgroundManager = new BackgroundManager()
         @backgroundManager.addBackgroundsFromData(@level.levelData.backgrounds)
         @backgroundManager.addBackgroundsToStage(@stage)
