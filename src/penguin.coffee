@@ -33,11 +33,11 @@ define (require, exports, module) ->
 
     keyUp: (e) =>
       if e.keyCode == 39 # right
-        #@movement.right = false
+        @movement.right = false
         @velocity = 0
       else if e.keyCode == 37 # left
         @velocity = 0
-        #@movement.left = false
+        @movement.left = false
 
     keyDown: (e) =>
       if e.keyCode == 39 # right
@@ -51,12 +51,10 @@ define (require, exports, module) ->
     
     tick: =>
       if @movement.right
-        #@sprite.position.x += @velocity
         @velocity       = Math.abs(@velocity)
         @sprite.scale.x = Math.abs(@sprite.scale.x)
       else if @movement.left
         @velocity       = -Math.abs(@velocity)
         @sprite.scale.x = -Math.abs(@sprite.scale.x)
-        #@sprite.position.x -= @velocity
 
   exports.Penguin = Penguin
