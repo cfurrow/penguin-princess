@@ -1,23 +1,25 @@
 define (require, exports, module) ->
   PIXI = require('pixi')
 
-  keyDown: (e) =>
-    if e.keyCode == 39 # right
-      @movement.right = false
-      @movement.left = true      
-    else if e.keyCode == 37 # left
-      @movement.left = false
-      @movement.right = true
-  
+  class Background
+    constructor: (imgPath, distance, width, height) ->
+      @distance = distance.toFixed(3)
+      #@baseMovement = baseMovement.toFixed(3)
+      @texture  = PIXI.Texture.fromImage(imgPath)
+      @sprite   = new PIXI.TilingSprite(@texture, width, height)
+      @movement = { left: false, right: false }
+      @sprite.anchor.y = 1.0
 
-  keyUp: (e) =>
-    if e.keyCode == 39 # right
-      @movement.left = false
-    else if e.keyCode == 37 # left
-      @movement.right = false
+    keyDown: (e) =>
+      if e.keyCode == 39 # right
+        @movement.right = false
+        @movement.left = true      
+      else if e.keyCode == 37 # left
+        @movement.left = false
+        @movement.right = true
+    
+    tick: (playerVelocity) =>
+      # -playerVelocity, so bg moves in opposite dir of playerVelocity
+      @sprite.position.x += -playerVelocity.toFixed(3) / @distance
 
-  tick: =>
-    if @movement.right
-      @sprite.position.x += @baseMovement/@distance
-    else if @movement.left
-      @sprite.position.x -= @baseMovement/@distance
+  exports.Background = Background

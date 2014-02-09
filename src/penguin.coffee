@@ -2,6 +2,7 @@ define (require, exports, module) ->
   PIXI = require('pixi')
 
   class Penguin
+    MAX_VELOCITY = 5
     constructor: ->
       @texture = PIXI.Texture.fromImage('assets/images/penguin.png')
       @sprite  = new PIXI.Sprite(@texture)
@@ -9,7 +10,7 @@ define (require, exports, module) ->
       @sprite.anchor.x = 0.5
       @sprite.anchor.y = 1.0
 
-      @baseMovement    = 5
+      @velocity    = 0
 
       @movement =  {left: false, right: false}
 
@@ -31,25 +32,31 @@ define (require, exports, module) ->
       @sprite.position
 
     keyUp: (e) =>
-      # if e.keyCode == 39 # right
-      #   @movement.right = false
-      # else if e.keyCode == 37 # left
-      #   @movement.left = false
+      if e.keyCode == 39 # right
+        #@movement.right = false
+        @velocity = 0
+      else if e.keyCode == 37 # left
+        @velocity = 0
+        #@movement.left = false
 
     keyDown: (e) =>
       if e.keyCode == 39 # right
         @movement.right = true
-        @movement.left = false      
+        @movement.left  = false
+        @velocity = MAX_VELOCITY      
       else if e.keyCode == 37 # left
-        @movement.left = true
+        @velocity = -MAX_VELOCITY
+        @movement.left  = true
         @movement.right = false
     
     tick: =>
       if @movement.right
-        #@sprite.position.x += @baseMovement
+        #@sprite.position.x += @velocity
+        @velocity       = Math.abs(@velocity)
         @sprite.scale.x = Math.abs(@sprite.scale.x)
       else if @movement.left
+        @velocity       = -Math.abs(@velocity)
         @sprite.scale.x = -Math.abs(@sprite.scale.x)
-        #@sprite.position.x -= @baseMovement
+        #@sprite.position.x -= @velocity
 
   exports.Penguin = Penguin

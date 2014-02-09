@@ -25,6 +25,7 @@ define (require, exports, module) ->
         @penguin.width(100)
         @penguin.height(100)
         @penguin.position(WIDTH/2, HEIGHT)
+        @interaction.addKeyUp(@penguin.keyUp)
         @interaction.addKeyDown(@penguin.keyDown)
 
         # @backgroundManager.addBackground(@mountain)
@@ -34,13 +35,12 @@ define (require, exports, module) ->
             @backgroundManager = new BackgroundManager()
             # TODO: level may not be loaded!
             @backgroundManager.addBackgroundsFromData(@level.levelData.backgrounds)
-            @backgroundManager.addKeyUps(@interaction)
-            @backgroundManager.addKeyDowns(@interaction)
-            
+            # @backgroundManager.addKeyUps(@interaction)
+            # @backgroundManager.addKeyDowns(@interaction)
+
             @backgroundManager.addBackgroundsToStage(@stage)
 
             @ground = new Ground(WIDTH, HEIGHT)
-
             
             @stage.addChild(@ground.sprite)
             @stage.addChild(@penguin.sprite)
@@ -50,7 +50,7 @@ define (require, exports, module) ->
       tick: =>
         requestAnimFrame(@tick)
         @penguin.tick()
-        @backgroundManager.tick()
+        @backgroundManager.tick(@penguin.velocity)
         @renderer.render(@stage)
 
       start: =>
