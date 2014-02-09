@@ -30,7 +30,7 @@ define(function(require, exports, module) {
       this.penguin.position(WIDTH / 2, HEIGHT);
       this.interaction.addKeyUp(this.penguin.keyUp);
       this.interaction.addKeyDown(this.penguin.keyDown);
-      this.level = new Level('/worlds/01.json', (function(_this) {
+      this.level = new Level('worlds/01.json', (function(_this) {
         return function() {
           _this.backgroundManager = new BackgroundManager();
           _this.backgroundManager.addBackgroundsFromData(_this.level.levelData.backgrounds);
