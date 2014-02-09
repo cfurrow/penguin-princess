@@ -11,12 +11,11 @@ define (require, exports, module) ->
     addBackgroundsFromData: (dataArray) =>
       @addBackground(@buildBackground(data)) for data in dataArray
 
-    buildBackground: (data) =>
-      # TODO: refactor constructor to take data
+    buildBackground: (options) =>
       # TODO: be able to parse 'max'
-      bg = new Background(data.texture, data.distance, data.width, data.height)
-      bg.sprite.position.x = data.x
-      bg.sprite.position.y = data.y
+      bg = new Background(options)
+      bg.sprite.position.x = options.x
+      bg.sprite.position.y = options.y
       bg
 
     addBackgroundsToStage: (stage) =>
@@ -29,7 +28,7 @@ define (require, exports, module) ->
       interaction.addKeyDown(bg.keyDown) for bg in @backgrounds
 
 
-    tick: (playVelocity)=>
-      bg.tick(playVelocity) for bg in @backgrounds
+    tick: (playerVelocity)=>
+      bg.tick(playerVelocity) for bg in @backgrounds
 
   exports.BackgroundManager = BackgroundManager

@@ -2,11 +2,10 @@ define (require, exports, module) ->
   PIXI = require('pixi')
 
   class Background
-    constructor: (imgPath, distance, width, height) ->
-      @distance = distance.toFixed(3)
-      #@baseMovement = baseMovement.toFixed(3)
-      @texture  = PIXI.Texture.fromImage(imgPath)
-      @sprite   = new PIXI.TilingSprite(@texture, width, height)
+    constructor: (options) ->
+      @distance = options.distance.toFixed(3)
+      @texture  = PIXI.Texture.fromImage(options.texture)
+      @sprite   = new PIXI.TilingSprite(@texture, options.width, options.height)
       @movement = { left: false, right: false }
       @sprite.anchor.y = 1.0
 
