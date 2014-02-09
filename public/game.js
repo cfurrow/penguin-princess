@@ -19,7 +19,7 @@ define(function(require, exports, module) {
     function Game() {
       this.start = __bind(this.start, this);
       this.tick = __bind(this.tick, this);
-      this.stage = new PIXI.Stage(0xffffff);
+      this.stage = new PIXI.Stage(0x97cfef);
       this.scene = document.getElementById('scene');
       this.renderer = PIXI.autoDetectRenderer(WIDTH, HEIGHT);
       this.scene.appendChild(this.renderer.view);
@@ -35,8 +35,6 @@ define(function(require, exports, module) {
           _this.backgroundManager = new BackgroundManager();
           _this.backgroundManager.addBackgroundsFromData(_this.level.levelData.backgrounds);
           _this.backgroundManager.addBackgroundsToStage(_this.stage);
-          _this.ground = new Ground(WIDTH, HEIGHT);
-          _this.stage.addChild(_this.ground.sprite);
           _this.stage.addChild(_this.penguin.sprite);
           return _this.start();
         };

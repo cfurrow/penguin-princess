@@ -9,7 +9,13 @@ define(function(require, exports, module) {
       this.keyDown = __bind(this.keyDown, this);
       this.distance = options.distance.toFixed(3);
       this.texture = PIXI.Texture.fromImage(options.texture);
-      this.sprite = new PIXI.TilingSprite(this.texture, options.width, options.height);
+      if ((options.repeat != null) && !options.repeat) {
+        this.sprite = new PIXI.Sprite(this.texture);
+        this.sprite.width = options.width;
+        this.sprite.height = options.height;
+      } else {
+        this.sprite = new PIXI.TilingSprite(this.texture, options.width, options.height);
+      }
       this.movement = {
         left: false,
         right: false
