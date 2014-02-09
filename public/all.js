@@ -11618,13 +11618,7 @@ Penguin = (function() {
     return this.sprite.position;
   };
 
-  Penguin.prototype.keyUp = function(e) {
-    if (e.keyCode === 39) {
-      return this.movement.right = false;
-    } else if (e.keyCode === 37) {
-      return this.movement.left = false;
-    }
-  };
+  Penguin.prototype.keyUp = function(e) {};
 
   Penguin.prototype.keyDown = function(e) {
     if (e.keyCode === 39) {
@@ -11638,9 +11632,9 @@ Penguin = (function() {
 
   Penguin.prototype.tick = function() {
     if (this.movement.right) {
-      return this.sprite.position.x += this.baseMovement;
+      return this.sprite.scale.x = Math.abs(this.sprite.scale.x);
     } else if (this.movement.left) {
-      return this.sprite.position.x -= this.baseMovement;
+      return this.sprite.scale.x = -Math.abs(this.sprite.scale.x);
     }
   };
 
@@ -11775,6 +11769,71 @@ Interaction = (function() {
 
 })();
 
+var BackgroundManager,
+  __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
+
+BackgroundManager = (function() {
+  function BackgroundManager() {
+    this.tick = __bind(this.tick, this);
+    this.addKeyDowns = __bind(this.addKeyDowns, this);
+    this.addKeyUps = __bind(this.addKeyUps, this);
+    this.addBackgroundsToStage = __bind(this.addBackgroundsToStage, this);
+    this.addBackground = __bind(this.addBackground, this);
+    this.backgrounds = [];
+  }
+
+  BackgroundManager.prototype.addBackground = function(background) {
+    return this.backgrounds.push(background);
+  };
+
+  BackgroundManager.prototype.addBackgroundsToStage = function(stage) {
+    var bg, _i, _len, _ref, _results;
+    _ref = this.backgrounds;
+    _results = [];
+    for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+      bg = _ref[_i];
+      _results.push(stage.addChild(bg.sprite));
+    }
+    return _results;
+  };
+
+  BackgroundManager.prototype.addKeyUps = function(interaction) {
+    var bg, _i, _len, _ref, _results;
+    _ref = this.backgrounds;
+    _results = [];
+    for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+      bg = _ref[_i];
+      _results.push(interaction.addKeyUp(bg.keyUp));
+    }
+    return _results;
+  };
+
+  BackgroundManager.prototype.addKeyDowns = function(interaction) {
+    var bg, _i, _len, _ref, _results;
+    _ref = this.backgrounds;
+    _results = [];
+    for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+      bg = _ref[_i];
+      _results.push(interaction.addKeyDown(bg.keyDown));
+    }
+    return _results;
+  };
+
+  BackgroundManager.prototype.tick = function() {
+    var bg, _i, _len, _ref, _results;
+    _ref = this.backgrounds;
+    _results = [];
+    for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+      bg = _ref[_i];
+      _results.push(bg.tick());
+    }
+    return _results;
+  };
+
+  return BackgroundManager;
+
+})();
+
 var Game,
   __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
 
@@ -11796,29 +11855,27 @@ Game = (function() {
     this.penguin = new Penguin();
     this.penguin.width(100);
     this.penguin.height(100);
-    this.penguin.position(100, HEIGHT);
-    this.mountain = new Background('./assets/images/mountain-01.gif', 3, this.penguin.baseMovement, 3200, 342);
+    this.penguin.position(WIDTH / 2, HEIGHT);
+    this.backgroundManager = new BackgroundManager();
+    this.mountain = new Background('./assets/images/mountain-01.gif', 20, this.penguin.baseMovement, 3200, 342);
     this.mountain.sprite.position.x = -800;
     this.mountain.sprite.position.y = HEIGHT;
-    this.mountain2 = new Background('./assets/images/mountain-02.gif', 6, this.penguin.baseMovement, 3200, 342);
+    this.mountain2 = new Background('./assets/images/mountain-02.gif', 30, this.penguin.baseMovement, 3200, 342);
     this.mountain2.sprite.position.x = -300;
     this.mountain2.sprite.position.y = HEIGHT;
-    this.interaction.addKeyUp(this.penguin.keyUp);
     this.interaction.addKeyDown(this.penguin.keyDown);
-    this.interaction.addKeyUp(this.mountain.keyUp);
-    this.interaction.addKeyDown(this.mountain.keyDown);
-    this.interaction.addKeyUp(this.mountain2.keyUp);
-    this.interaction.addKeyDown(this.mountain2.keyDown);
-    this.stage.addChild(this.mountain2.sprite);
-    this.stage.addChild(this.mountain.sprite);
+    this.backgroundManager.addBackground(this.mountain);
+    this.backgroundManager.addBackground(this.mountain2);
+    this.backgroundManager.addKeyUps(this.interaction);
+    this.backgroundManager.addKeyDowns(this.interaction);
+    this.backgroundManager.addBackgroundsToStage(this.stage);
     this.stage.addChild(this.penguin.sprite);
   }
 
   Game.prototype.tick = function() {
     requestAnimFrame(this.tick);
     this.penguin.tick();
-    this.mountain.tick();
-    this.mountain2.tick();
+    this.backgroundManager.tick();
     return this.renderer.render(this.stage);
   };
 

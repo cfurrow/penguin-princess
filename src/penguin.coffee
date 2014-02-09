@@ -28,10 +28,10 @@ class Penguin
     @sprite.position
 
   keyUp: (e) =>
-    if e.keyCode == 39 # right
-      @movement.right = false
-    else if e.keyCode == 37 # left
-      @movement.left = false
+    # if e.keyCode == 39 # right
+    #   @movement.right = false
+    # else if e.keyCode == 37 # left
+    #   @movement.left = false
 
   keyDown: (e) =>
     if e.keyCode == 39 # right
@@ -43,6 +43,8 @@ class Penguin
   
   tick: =>
     if @movement.right
-      @sprite.position.x += @baseMovement
+      #@sprite.position.x += @baseMovement
+      @sprite.scale.x = Math.abs(@sprite.scale.x)
     else if @movement.left
-      @sprite.position.x -= @baseMovement
+      @sprite.scale.x = -Math.abs(@sprite.scale.x)
+      #@sprite.position.x -= @baseMovement

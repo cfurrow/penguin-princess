@@ -12,33 +12,32 @@ class Game
     @penguin = new Penguin()
     @penguin.width(100)
     @penguin.height(100)
-    @penguin.position(100, HEIGHT)
+    @penguin.position(WIDTH/2, HEIGHT)
 
-    @mountain = new Background('./assets/images/mountain-01.gif', 3, @penguin.baseMovement, 3200, 342)
+    @backgroundManager = new BackgroundManager()
+
+    @mountain = new Background('./assets/images/mountain-01.gif', 20, @penguin.baseMovement, 3200, 342)
     @mountain.sprite.position.x = -800
     @mountain.sprite.position.y = HEIGHT
 
-    @mountain2 = new Background('./assets/images/mountain-02.gif', 6, @penguin.baseMovement, 3200, 342)
+    @mountain2 = new Background('./assets/images/mountain-02.gif', 30, @penguin.baseMovement, 3200, 342)
     @mountain2.sprite.position.x = -300
     @mountain2.sprite.position.y = HEIGHT
 
-    @interaction.addKeyUp(@penguin.keyUp)
     @interaction.addKeyDown(@penguin.keyDown)
 
-    @interaction.addKeyUp(@mountain.keyUp)
-    @interaction.addKeyDown(@mountain.keyDown)
-    @interaction.addKeyUp(@mountain2.keyUp)
-    @interaction.addKeyDown(@mountain2.keyDown)
+    @backgroundManager.addBackground(@mountain)
+    @backgroundManager.addBackground(@mountain2)
+    @backgroundManager.addKeyUps(@interaction)
+    @backgroundManager.addKeyDowns(@interaction)
 
-    @stage.addChild(@mountain2.sprite)
-    @stage.addChild(@mountain.sprite)
+    @backgroundManager.addBackgroundsToStage(@stage)
     @stage.addChild(@penguin.sprite)
 
   tick: =>
     requestAnimFrame(@tick)
     @penguin.tick()
-    @mountain.tick()
-    @mountain2.tick()
+    @backgroundManager.tick()
     @renderer.render(@stage)
 
   start: =>

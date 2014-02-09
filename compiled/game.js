@@ -19,29 +19,27 @@ Game = (function() {
     this.penguin = new Penguin();
     this.penguin.width(100);
     this.penguin.height(100);
-    this.penguin.position(100, HEIGHT);
-    this.mountain = new Background('./assets/images/mountain-01.gif', 3, this.penguin.baseMovement, 3200, 342);
+    this.penguin.position(WIDTH / 2, HEIGHT);
+    this.backgroundManager = new BackgroundManager();
+    this.mountain = new Background('./assets/images/mountain-01.gif', 20, this.penguin.baseMovement, 3200, 342);
     this.mountain.sprite.position.x = -800;
     this.mountain.sprite.position.y = HEIGHT;
-    this.mountain2 = new Background('./assets/images/mountain-02.gif', 6, this.penguin.baseMovement, 3200, 342);
+    this.mountain2 = new Background('./assets/images/mountain-02.gif', 30, this.penguin.baseMovement, 3200, 342);
     this.mountain2.sprite.position.x = -300;
     this.mountain2.sprite.position.y = HEIGHT;
-    this.interaction.addKeyUp(this.penguin.keyUp);
     this.interaction.addKeyDown(this.penguin.keyDown);
-    this.interaction.addKeyUp(this.mountain.keyUp);
-    this.interaction.addKeyDown(this.mountain.keyDown);
-    this.interaction.addKeyUp(this.mountain2.keyUp);
-    this.interaction.addKeyDown(this.mountain2.keyDown);
-    this.stage.addChild(this.mountain2.sprite);
-    this.stage.addChild(this.mountain.sprite);
+    this.backgroundManager.addBackground(this.mountain);
+    this.backgroundManager.addBackground(this.mountain2);
+    this.backgroundManager.addKeyUps(this.interaction);
+    this.backgroundManager.addKeyDowns(this.interaction);
+    this.backgroundManager.addBackgroundsToStage(this.stage);
     this.stage.addChild(this.penguin.sprite);
   }
 
   Game.prototype.tick = function() {
     requestAnimFrame(this.tick);
     this.penguin.tick();
-    this.mountain.tick();
-    this.mountain2.tick();
+    this.backgroundManager.tick();
     return this.renderer.render(this.stage);
   };
 

@@ -53,13 +53,7 @@ Penguin = (function() {
     return this.sprite.position;
   };
 
-  Penguin.prototype.keyUp = function(e) {
-    if (e.keyCode === 39) {
-      return this.movement.right = false;
-    } else if (e.keyCode === 37) {
-      return this.movement.left = false;
-    }
-  };
+  Penguin.prototype.keyUp = function(e) {};
 
   Penguin.prototype.keyDown = function(e) {
     if (e.keyCode === 39) {
@@ -73,9 +67,9 @@ Penguin = (function() {
 
   Penguin.prototype.tick = function() {
     if (this.movement.right) {
-      return this.sprite.position.x += this.baseMovement;
+      return this.sprite.scale.x = Math.abs(this.sprite.scale.x);
     } else if (this.movement.left) {
-      return this.sprite.position.x -= this.baseMovement;
+      return this.sprite.scale.x = -Math.abs(this.sprite.scale.x);
     }
   };
 
