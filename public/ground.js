@@ -1,7 +1,6 @@
-define(function(require, exports, module) {
-  var Ground, PIXI;
-  PIXI = require('pixi');
-  Ground = (function() {
+define(['pixi'], function(PIXI) {
+  var Ground;
+  return Ground = (function() {
     function Ground(canvasWidth, canvasHeight) {
       this.canvasWidth = canvasWidth;
       this.canvasHeight = canvasHeight;
@@ -16,5 +15,4 @@ define(function(require, exports, module) {
     return Ground;
 
   })();
-  return exports.Ground = Ground;
 });

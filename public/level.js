@@ -1,8 +1,8 @@
 var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
 
-define(function(require, exports, module) {
+define([], function() {
   var Level;
-  Level = (function() {
+  return Level = (function() {
     function Level(path, loaded) {
       this.load = __bind(this.load, this);
       this.path = path;
@@ -34,5 +34,4 @@ define(function(require, exports, module) {
     return Level;
 
   })();
-  return exports.Level = Level;
 });

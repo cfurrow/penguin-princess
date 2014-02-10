@@ -1,15 +1,8 @@
 var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
 
-define(function(require, exports, module) {
-  var Background, BackgroundManager, Game, Ground, Interaction, Level, PIXI, Penguin;
-  Background = require('app/background');
-  BackgroundManager = require('app/background_manager');
-  Interaction = require('app/interaction');
-  Penguin = require('app/penguin');
-  Ground = require('app/ground');
-  Level = require('app/level');
-  PIXI = require('pixi');
-  Game = (function() {
+define(['app/background', 'app/background_manager', 'app/interaction', 'app/penguin', 'app/ground', 'app/level', 'pixi'], function(Background, BackgroundManager, Interaction, Penguin, Ground, Level, PIXI) {
+  var Game;
+  return Game = (function() {
     var HEIGHT, WIDTH;
 
     WIDTH = 800;
@@ -25,8 +18,8 @@ define(function(require, exports, module) {
       this.scene.appendChild(this.renderer.view);
       this.interaction = new Interaction();
       this.penguin = new Penguin();
-      this.penguin.width(100);
-      this.penguin.height(100);
+      this.penguin.width(75);
+      this.penguin.height(75);
       this.penguin.position(WIDTH / 2, HEIGHT);
       this.interaction.addKeyUp(this.penguin.keyUp);
       this.interaction.addKeyDown(this.penguin.keyDown);
@@ -55,5 +48,4 @@ define(function(require, exports, module) {
     return Game;
 
   })();
-  return exports.Game = Game;
 });

@@ -1,9 +1,8 @@
 var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
 
-define(function(require, exports, module) {
-  var Background, BackgroundManager;
-  Background = require('app/background');
-  BackgroundManager = (function() {
+define(['app/background'], function(Background) {
+  var BackgroundManager;
+  return BackgroundManager = (function() {
     function BackgroundManager() {
       this.tick = __bind(this.tick, this);
       this.addKeyDowns = __bind(this.addKeyDowns, this);
@@ -84,5 +83,4 @@ define(function(require, exports, module) {
     return BackgroundManager;
 
   })();
-  return exports.BackgroundManager = BackgroundManager;
 });

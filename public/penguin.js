@@ -1,9 +1,8 @@
 var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
 
-define(function(require, exports, module) {
-  var PIXI, Penguin;
-  PIXI = require('pixi');
-  Penguin = (function() {
+define(['pixi'], function(PIXI) {
+  var Penguin;
+  return Penguin = (function() {
     var MAX_VELOCITY;
 
     MAX_VELOCITY = 5;
@@ -94,5 +93,4 @@ define(function(require, exports, module) {
     return Penguin;
 
   })();
-  return exports.Penguin = Penguin;
 });

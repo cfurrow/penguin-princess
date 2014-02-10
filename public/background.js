@@ -1,9 +1,8 @@
 var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
 
-define(function(require, exports, module) {
-  var Background, PIXI;
-  PIXI = require('pixi');
-  Background = (function() {
+define(['pixi'], function(PIXI) {
+  var Background;
+  return Background = (function() {
     function Background(options) {
       this.tick = __bind(this.tick, this);
       this.keyDown = __bind(this.keyDown, this);
@@ -40,5 +39,4 @@ define(function(require, exports, module) {
     return Background;
 
   })();
-  return exports.Background = Background;
 });

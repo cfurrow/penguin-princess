@@ -1,8 +1,8 @@
 var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
 
-define(function(require, exports, module) {
+define([], function() {
   var Interaction;
-  Interaction = (function() {
+  return Interaction = (function() {
     function Interaction() {
       this.defaultEvent = __bind(this.defaultEvent, this);
       this.runKeyPresses = __bind(this.runKeyPresses, this);
@@ -76,5 +76,4 @@ define(function(require, exports, module) {
     return Interaction;
 
   })();
-  return exports.Interaction = Interaction;
 });
