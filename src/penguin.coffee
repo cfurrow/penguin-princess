@@ -1,6 +1,4 @@
-define (require, exports, module) ->
-  PIXI = require('pixi')
-
+define ['pixi'], (PIXI) ->
   class Penguin
     MAX_VELOCITY = 5
     constructor: ->
@@ -56,5 +54,3 @@ define (require, exports, module) ->
       else if @movement.left
         @velocity       = -Math.abs(@velocity)
         @sprite.scale.x = -Math.abs(@sprite.scale.x)
-
-  exports.Penguin = Penguin

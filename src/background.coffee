@@ -1,6 +1,4 @@
-define (require, exports, module) ->
-  PIXI = require('pixi')
-
+define ['pixi'], (PIXI) ->
   class Background
     constructor: (options) ->
       @distance = options.distance.toFixed(3)
@@ -25,5 +23,3 @@ define (require, exports, module) ->
     tick: (playerVelocity) =>
       # -playerVelocity, so bg moves in opposite dir of playerVelocity
       @sprite.position.x += -playerVelocity.toFixed(3) / @distance
-
-  exports.Background = Background

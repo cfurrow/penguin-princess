@@ -1,6 +1,4 @@
-define (require, exports, module) ->
-  Background = require('app/background')
-
+define ['app/background'], (Background) ->
   class BackgroundManager
     constructor: ->
       @backgrounds = []
@@ -30,5 +28,3 @@ define (require, exports, module) ->
 
     tick: (playerVelocity)=>
       bg.tick(playerVelocity) for bg in @backgrounds
-
-  exports.BackgroundManager = BackgroundManager

@@ -7,15 +7,15 @@
 
   "backgrounds": [
     {
-      "width": 3200,
-      "height": 350,
+      "width": 6800,
+      "height": 600,
       "texture": "assets/images/mountain-02.gif",
       "x": 0,
       "y": 550,
       "distance": 30
     },
     {
-      "width": 3200,
+      "width": 6800,
       "height": 342,
       "texture": "assets/images/mountain-01.gif",
       "x": -100,
@@ -23,7 +23,7 @@
       "distance": 20
     },
     {
-      "width": 3200,
+      "width": 6800,
       "height": 50,
       "texture": "assets/images/snow.gif",
       "x": -500,
@@ -31,9 +31,9 @@
       "distance": 3
     },
     {
-      "width": 100,
-      "height": 200,
-      "texture": "assets/images/mountain-02.gif",
+      "width": 300,
+      "height": 600,
+      "texture": "assets/images/shard.gif",
       "repeat": false,
       "x": 900,
       "y": 550,
