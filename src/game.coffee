@@ -20,8 +20,8 @@ define (require, exports, module) ->
       @interaction = new Interaction();
 
       @penguin = new Penguin()
-      @penguin.width(100)
-      @penguin.height(100)
+      @penguin.width(75)
+      @penguin.height(75)
       @penguin.position(WIDTH/2, HEIGHT)
       @interaction.addKeyUp(@penguin.keyUp)
       @interaction.addKeyDown(@penguin.keyDown)
