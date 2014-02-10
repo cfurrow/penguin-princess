@@ -1,47 +1,37 @@
-define (require, exports, module) ->
-  Background        = require('app/background')
-  BackgroundManager = require('app/background_manager')
-  Interaction       = require('app/interaction')
-  Penguin           = require('app/penguin')
-  Ground            = require('app/ground')
-  Level             = require('app/level')
-  PIXI              = require('pixi')
+define ['app/background', 'app/background_manager', 'app/interaction', 'app/penguin', 'app/ground', 'app/level', 'pixi'], 
+  (Background, BackgroundManager, Interaction, Penguin, Ground, Level, PIXI) ->
+    class Game
+      WIDTH  = 800
+      HEIGHT = 600
+      constructor: ->
+        @stage    = new PIXI.Stage(0x97cfef)
+        @scene    = document.getElementById('scene')
 
+        @renderer = PIXI.autoDetectRenderer(WIDTH, HEIGHT)
+        @scene.appendChild(@renderer.view)
+        @interaction = new Interaction();
 
-  class Game
-    WIDTH  = 800
-    HEIGHT = 600
-    constructor: ->
-      @stage    = new PIXI.Stage(0x97cfef)
-      @scene    = document.getElementById('scene')
+        @penguin = new Penguin()
+        @penguin.width(75)
+        @penguin.height(75)
+        @penguin.position(WIDTH/2, HEIGHT)
+        @interaction.addKeyUp(@penguin.keyUp)
+        @interaction.addKeyDown(@penguin.keyDown)
 
-      @renderer = PIXI.autoDetectRenderer(WIDTH, HEIGHT)
-      @scene.appendChild(@renderer.view)
-      @interaction = new Interaction();
+        @level    = new Level 'worlds/01.json', ()=>
+          @backgroundManager = new BackgroundManager()
+          @backgroundManager.addBackgroundsFromData(@level.levelData.backgrounds)
+          @backgroundManager.addBackgroundsToStage(@stage)
 
-      @penguin = new Penguin()
-      @penguin.width(75)
-      @penguin.height(75)
-      @penguin.position(WIDTH/2, HEIGHT)
-      @interaction.addKeyUp(@penguin.keyUp)
-      @interaction.addKeyDown(@penguin.keyDown)
+          @stage.addChild(@penguin.sprite)
 
-      @level    = new Level 'worlds/01.json', ()=>
-        @backgroundManager = new BackgroundManager()
-        @backgroundManager.addBackgroundsFromData(@level.levelData.backgrounds)
-        @backgroundManager.addBackgroundsToStage(@stage)
+          @start()
 
-        @stage.addChild(@penguin.sprite)
+      tick: =>
+        requestAnimFrame(@tick)
+        @penguin.tick()
+        @backgroundManager.tick(@penguin.velocity)
+        @renderer.render(@stage)
 
-        @start()
-
-    tick: =>
-      requestAnimFrame(@tick)
-      @penguin.tick()
-      @backgroundManager.tick(@penguin.velocity)
-      @renderer.render(@stage)
-
-    start: =>
-      requestAnimFrame(@tick)
-
-  exports.Game = Game
+      start: =>
+        requestAnimFrame(@tick)

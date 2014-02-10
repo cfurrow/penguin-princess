@@ -1,6 +1,4 @@
-define (require, exports, module) ->
-  PIXI = require('pixi')
-
+define ['pixi'], (PIXI)->
   class Ground
     constructor: (canvasWidth, canvasHeight)->
       @canvasWidth  = canvasWidth
@@ -14,5 +12,3 @@ define (require, exports, module) ->
 
       @sprite.position.x = 0
       @sprite.position.y = @canvasHeight - @height
-
-  exports.Ground = Ground

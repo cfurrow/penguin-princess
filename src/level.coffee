@@ -1,4 +1,4 @@
-define (require, exports, module)->
+define [], ()->
   class Level
     constructor: (path, loaded) ->
       @path = path
@@ -21,6 +21,4 @@ define (require, exports, module)->
 
       request.onerror = ()=>
         # There was a connection error of some sort
-      
       request.send()  
-  exports.Level = Level

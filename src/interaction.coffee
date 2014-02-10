@@ -1,4 +1,4 @@
-define (require, exports, module) ->
+define [], ()->
   class Interaction
     constructor: ()->
       @keyUpEvents    = [@defaultEvent]
@@ -42,5 +42,3 @@ define (require, exports, module) ->
     defaultEvent: (e) =>
       unless e.keyCode == 82 && e.metaKey
         @cancelBubble()
-
-  exports.Interaction = Interaction
